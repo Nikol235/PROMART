@@ -1,12 +1,12 @@
 import java.util.Scanner;
 public class PROMART_JULIACA{
-    private double total,total_a_pagar=0,aumentar,vuelto,igv,subtotal,cant_de_dinero=0;
+    private double  subtotal,total,total_a_pagar=0,aumentar,vuelto,igv,cant_de_dinero=0;
     private int cant_compra,opcion;
     private int mueblesOpcion, roperosOpcion, comodasOpcion, camarotesOpcion, oficinaOpcion, escritoriosOpcion;
     private int Decoracion,baño,opcion1,terrazasB,terrazasS, comedores,terraza,jardineria,decojardin;
     private int floreros,plantas,sol,herramientas,grass,tijerasyguantes,palmeras;
-    private int Mcocina,CocinaMUebles,CModulares,CM,FT,OF;
     private double pago,resto;
+    private double cantidadtotal=0;
     Scanner ncs= new Scanner(System.in);
     public double total(){
         igv = total * 0.18;
@@ -18,31 +18,36 @@ public class PROMART_JULIACA{
         return total;
     }
 
-    public double vuelto(){
+    public double vuelto() {
         System.out.println("Ingrese la cantidad a pagar:");
         pago = ncs.nextDouble();
+        while (pago < 0) {
+            System.out.println("No puede ingresar una cantidad negativa. Ingrese un valor válido:");
+            pago = ncs.nextDouble();
+        }
         vuelto = pago - total;
-        if (vuelto < 0){
+        if (vuelto < 0) {
             System.out.println("Falta pagar " + -(vuelto));
             System.out.println("Completa el monto a pagar");
             resto = ncs.nextDouble();
-            if(-(vuelto) == resto){
-                System.out.println("Pago Completo");
+            while (resto < 0) {
+                System.out.println("No puede ingresar una cantidad negativa. Ingrese un valor válido:");
+                resto = ncs.nextDouble();
             }
-            else if (-(vuelto)<resto) {
-                System.out.println("Usted tiene de vuelto: " + (resto + vuelto));
-            }
-            else{
-                System.out.println("No tiene dinero, deje ese objeto en su lugar. ");
-            }
-        }
-        else if (vuelto > 0){
 
+            if (-(vuelto) == resto) {
+                System.out.println("Pago Completado");
+            } else if (-(vuelto) < resto) {
+                System.out.println("Usted tiene de vuelto: " + (resto + vuelto));
+            } else {
+                System.out.println("No tiene dinero, deje ese objeto en su lugar.");
+            }
+        } else if (vuelto > 0) {
             System.out.println("Su vuelto es: " + vuelto);
-        }
-        else {
+        } else {
             System.out.println("Pago completo");
         }
+
         System.exit(0);
         return vuelto;
     }
@@ -54,34 +59,11 @@ public class PROMART_JULIACA{
         System.out.println("""
                 OPCIONES
                 
-                |1|- ir a inicio
-                |2|- solicita tu tarjeta oh!
-                |3|- blog
-                |4|- servicios promart
-                |5|- venta empresa
-                |6|- casa inteligente
-                |7|- ofertas especiales
-                |8|- lanzamientos
+              
                 |9|- categorias
                 """);
         opcion = ncs.nextInt();
         switch (opcion) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
             case 9:
                 this.secciondecategorias();
                 break;
@@ -99,9 +81,9 @@ public class PROMART_JULIACA{
                 |4|-  baño-----------------------------|
                 |5|-  cocina---------------------------|
                 |6|-  dormitorio-----------------------|
-                |7|- pisos y ceramicos----------------|
-                |8|- herramientas---------------------|
-                |9|- construccion---------------------|
+                |7|-  pisos y ceramicos----------------|
+                |8|-  herramientas---------------------|
+                |9|-  construccion---------------------|
                 |10|- electricidad---------------------|
                 |11|- gasfiteria-----------------------|
                 |12|- iluminacion----------------------|
@@ -213,8 +195,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida. Intente de nuevo.");
         }
     }
-
-
     public void mueblesDormitorio() {
         System.out.println("\n---MUEBLES DE DORMITORIO---");
         System.out.println("""
@@ -234,7 +214,7 @@ public class PROMART_JULIACA{
                 this.comodas();
                 break;
             case 3:
-                this.camarotes();
+                this.Camarotes();
                 break;
             default:
                 System.out.println("Subopción no válida.");
@@ -243,7 +223,6 @@ public class PROMART_JULIACA{
     public void roperos() {
         System.out.println("\n---SECCIÓN DE ROPEROS---");
         System.out.println("""
-                
                 |1|-  Roperos Blancos---------------------------
                 |2|-  Roperos con espejo------------------------
                 |3|-  roperos con dos puertas-------------------
@@ -253,150 +232,491 @@ public class PROMART_JULIACA{
 
         switch (roperosOpcion) {
             case 1:
-                System.out.println("Ha seleccionado: Ropero Siena 6 puertas 2 cajones (449$)");
-                System.out.println("Ha seleccionado: Ropero Multiuso Cali Tamires 2 puertas 4 repisas (279$)");
+                this.RoperosBlancos();
                 break;
             case 2:
-                System.out.println("Ha seleccionado: Ropero Viena 3 puertas corredizas + Espejo (1049$)");
-                System.out.println("Ha seleccionado: Ropero Capri 3 puertas + Espejo (449$)");
+                this.RoperosEspejo();
                 break;
             case 3:
-                System.out.println("Ha seleccionado: Ropero Multiuso Cali Tamires (279$)");
-                System.out.println("Ha seleccionado: Ropero Cali 2 puertas (289$)");
+                this.Roperos_dos_puetas();
                 break;
             default:
                 System.out.println("Opción no válida.");
         }
     }
-
+    public void RoperosBlancos() {
+        System.out.println("""
+                |--------------------------- ROPEROS BLANCOS------------------------------------|- Precio ---|
+                |1|- Ropero Siena 6 puertas 2 cajones-------------------------------------------|- S/ 449 ---|
+                |2|- Ropero Multiuso Cali Tamires 2 puertas 4 repisas --------------------------|- S/ 279 ---|
+                """);
+        int rp = ncs.nextInt();
+        switch (rp) {
+            case 1:
+                System.out.println("Ha seleccionado: Ropero Siena 6 puertas 2 cajones (449$)");
+                total = 449;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Ropero Multiuso Cali Tamires 2 puertas 4 repisas (279$)");
+                total = 279;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void RoperosEspejo(){
+        System.out.println("""
+                |--------------------------- ROPEROS CON ESPEJO---------------------------------|- Precio ----|
+                |1|- Ropero Viena 3 puertas corredizas + Espejo---------------------------------|- S/ 1049 ---|
+                |2|- Ropero Capri 3 puertas + Espejo--------------------------------------------|- S/ 449- ---|
+                """);
+        int RE = ncs.nextInt();
+        switch(RE){
+            case 1 :
+                System.out.println("Ha seleccionado: Ropero Viena 3 puertas corredizas + Espejo (1049$)");
+                total=1049;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Ropero Capri 3 puertas + Espejo (449$)");
+                total=449;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+        }
+    }
+    public void Roperos_dos_puetas(){
+        System.out.println("""
+                |------------------------ROPEROS CON DOS PUERTAS--------------------------------|- Precio ----|
+                |1|- Ropero Viena 3 puertas corredizas + Espejo---------------------------------|- S/ 279 ----|
+                |2|- Ropero Capri 3 puertas + Espejo--------------------------------------------|- S/ 289 ----|
+                """);
+        int RDP = ncs.nextInt();
+        switch(RDP){
+            case 1:
+                System.out.println("Ha seleccionado: Ropero Multiuso Cali Tamires (279$)");
+                total=279;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Ropero Cali 2 puertas (289$)");
+                total= 289;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+        }
+    }
     public void comodas() {
         System.out.println("\n---SECCIÓN DE COMODAS---");
-        System.out.println("""
-                
+        System.out.println("""               
                 |1|-  Cómodas de plástico--------------------------
                 |2|-  cómodas Blancas------------------------------
-                |3|-  COMODAS marrones-----------------------------
+                |3|-  Cómodas marrones-----------------------------
                 """);
         System.out.print("Ingrese una opción: ");
         comodasOpcion = ncs.nextInt();
 
         switch (comodasOpcion) {
             case 1:
-                System.out.println("Ha seleccionado: Cómoda Polin #6 Rosado Morado (299.90$)");
-                System.out.println("Ha seleccionado: Cómoda Polinplast Smart #5 (139.90$)");
+                this.ComodasPlástico();
                 break;
             case 2:
-                System.out.println("Ha seleccionado: Comoda Tocador Praga (269$)");
-                System.out.println("Ha seleccionado: Cómoda Cali (249$)");
+                this.ComodasBlancas();
                 break;
             case 3:
-                System.out.println("Ha seleccionado: Cómoda Kaia (839$)");
-                System.out.println("Ha seleccionado: Cómoda Cali (249$)");
+                this.ComodasMarrones();
                 break;
             default:
                 System.out.println("Opción no válida.");
         }
     }
-
-    public void camarotes() {
-        System.out.println("\n---CAMAROTES---");
-        System.out.println("1.- Camarote 1 plaza ½ + colchón paraíso + gratis almohada (2699$)");
-        System.out.println("2.- Camarote multifuncional con escritorio 1 plaza/1.5 plazas DMuebles Barcelona (3599$)");
-        System.out.println("3.- Camarote 2 plazas FMuebles Husar con Organizador (4599$)");
-        System.out.println("4.- Camarote triple 2 plazas DMuebles Valladol con Cama Nido (4599$)");
-        camarotesOpcion = ncs.nextInt();
-
-        switch (camarotesOpcion) {
+    public void ComodasPlástico(){
+        System.out.println("""
+                |---------------------------CÓMODAS DE PLÁSTICO---------------------------------|- Precio ----|
+                |1|- Ropero Viena 3 puertas corredizas + Espejo---------------------------------|- S/ 839 ----|
+                |2|- Ropero Capri 3 puertas + Espejo--------------------------------------------|- S/ 249 ----|
+                """);
+        int CP = ncs.nextInt();
+        switch (CP){
             case 1:
-                System.out.println("Ha seleccionado: Camarote 1 plaza ½ + colchón paraíso (2699$)");
+                System.out.println("Ha seleccionado: Cómoda Kaia (839$)");
+                total=839;
+                this.total();
+                this.vuelto();
                 break;
             case 2:
-                System.out.println("Ha seleccionado: Camarote multifuncional con escritorio (3599$)");
-                break;
-            case 3:
-                System.out.println("Ha seleccionado: Camarote 2 plazas con Organizador (4599$)");
-                break;
-            case 4:
-                System.out.println("Ha seleccionado: Camarote triple 2 plazas (4599$)");
+                System.out.println("Ha seleccionado: Cómoda Cali (249$)");
+                total=249;
+                this.total();
+                this.vuelto();
                 break;
             default:
-                System.out.println("Opción no válida.");
+                System.out.println("OPpción no valida");
         }
     }
-
+    public void ComodasBlancas(){
+        System.out.println("""
+                |--------------------------CÓMODAS BLANCAS------------------------|- Precio ----|
+                |1|- Comoda Tocador Praga-----------------------------------------|- S/ 269 ----|
+                |2|- Cómoda Cali--------------------------------------------------|- S/ 249 ----|
+                """);
+        int CB = ncs.nextInt();
+        switch(CB){
+            case 1:
+                System.out.println("Ha seleccionado: Comoda Tocador Praga (269$)");
+                total= 269;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Cómoda Cali (249$)");
+                total=249;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void ComodasMarrones(){
+        System.out.println("""
+                |------------------------CÓMODAS MARRONES----------------|- Precio ----|
+                |1|- Cómoda Kaia-----------------------------------------|- S/ 839 ----|
+                |2|- Cómoda Cali ----------------------------------------|- S/ 249 ----|
+                """);
+        int CM = ncs.nextInt();
+        switch(CM){
+            case 1:
+                System.out.println("Ha seleccionado: Cómoda Kaia (839$)");
+                total=839;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Cómoda Cali (249$)");
+                total=249;
+                this.total();
+                this.total();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+        }
+    }
+    public void Camarotes(){
+        System.out.println("-----SECCIÓN DE CAMAROTES-----");
+        System.out.println("""               
+                |1|-  Camarores de 1 plazas--------------------------
+                |2|-  Camarotes de 2 plazas----------------------------
+                """);
+        int Ocamarotes= ncs.nextInt();
+        switch(Ocamarotes){
+            case 1:
+                this.Camarores_1_plaza();
+                break;
+            case 2:
+                this.Camarotes_2_plazas();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void Camarores_1_plaza(){
+        System.out.println("""
+                |-------------------- CAMAROTES DE 1.5 PLAZAS-------------------------------------|- Precio --|
+                |1|- Camarote 1 plaza ½ + colchón paraíso + gratis almohada-----------------------|- S/ 2699--|
+                |2|- Camarote multifuncional con escritorio 1 plaza/1.5 plazas DMuebles Barcelona-|- S/ 3599--|
+                """);
+        int camarote1 = ncs.nextInt();
+        switch (camarote1){
+            case 1:
+                System.out.println("Ha Seleccionado:" +
+                        " Camarote 1 plaza ½ + colchón paraíso + gratis almohada (2699$)");
+                total= 2699;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado:" +
+                        " Camarote multifuncional con escritorio 1 plaza/1.5 plazas DMuebles Barcelona (3599$)");
+                total= 3599;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void Camarotes_2_plazas(){
+        System.out.println("""
+                |---------------------- CAMAROTES DE 2 PLAZAS-------------------------------------|- Precio --|
+                |1|- Camarote 2 plazas FMuebles Husar con Organizador-----------------------------|- S/ 4599--|
+                |2|- Camarote triple 2 plazas DMuebles Valladol con Cama Nido---------------------|- S/ 4599--|
+                """);
+        int camarote2 = ncs.nextInt();
+        switch (camarote2){
+            case 1:
+                System.out.println("Ha Seleccionado:" +
+                        " Camarote 2 plazas FMuebles Husar con Organizador (4599$)");
+                total= 4599;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado:" +
+                        " Camarote triple 2 plazas DMuebles Valladol con Cama Nido (4599$)");
+                total= 4599;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
     public void mueblesOficina() {
         System.out.println("\n---MUEBLES DE OFICINA---");
         System.out.println("""
-                
                 |1|-  Sillas y Sillones de oficina------------------
                 |2|-  Sillas Gamer----------------------------------
-                |3|-  Ecritorios------------------------------------
+                |3|-  Escritorios------------------------------------
                 """);
         System.out.print("Ingrese una opción: ");
         oficinaOpcion = ncs.nextInt();
-
         switch (oficinaOpcion) {
             case 1:
-                System.out.println("Ha seleccionado: Silla de oficina giratoria Orange Tauro Negro");
-                System.out.println("Ha seleccionado: Silla fija Estambul Negra Orange");
+                this.SillasySillones();
                 break;
             case 2:
-                System.out.println("Ha seleccionado: Silla Gamer Azul Orange");
-                System.out.println("Ha seleccionado: Silla Gamer New Racing Pro Cuero rojo/negro Orange");
+                this.sillasGamer();
                 break;
             case 3:
-                this.escritorios();
+                this.Escritorios();
                 break;
             default:
                 System.out.println("Opción no válida.");
         }
     }
-
-    public void escritorios() {
-        System.out.println("\n---ESCRITORIOS---");
-        System.out.println("1.- Escritorio Gamer Sirion MDP negro/ Rojo Bonno (499$)");
-        System.out.println("2.- Escritorio Gamer Odin OfficeSpace (699$)");
-        System.out.println("3.- Escritorio Organizador Vintage Mirandah Ventitas Home Duna y Blanco (329$)");
-        System.out.println("4.- Escritorio Vintage Moderno Alice Alto 151cm (799$)");
-        escritoriosOpcion = ncs.nextInt();
-
-        switch (escritoriosOpcion) {
+    public void SillasySillones(){
+        System.out.println("""
+                |-------------------SILLAS Y SILLONES DE OFICINA------------------|- Precio ----|
+                |1|- Silla de oficina giratoria Orange Tauro Negro----------------|- S/ 119 ----|
+                |2|- Silla fija Estambul Negra Orange-----------------------------|- S/ 109 ----|
+                """);
+        int sillasysillones=ncs.nextInt();
+        switch(sillasysillones){
             case 1:
-                System.out.println("Ha seleccionado: Escritorio Gamer Sirion (499$)");
+                System.out.println("Ha seleccionado: Silla de oficina giratoria Orange Tauro Negro(119$)");
+                total=119;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Silla fija Estambul Negra Orange(109)");
+                total=109;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void sillasGamer(){
+        System.out.println("""
+                |-------------------------SILLAS GAMER-----------------------------|- Precio ----|
+                |1|- Silla Gamer Azul Orange---------------------------------------|- S/ 249 ----|
+                |2|- Silla Gamer New Racing Pro Pu Cuero rojo/negro Orange---------|- S/ 399 ----|
+                """);
+        int sillasgamer=ncs.nextInt();
+        switch(sillasgamer){
+            case 1:
+                System.out.println("Ha seleccionado: Silla Gamer Azul Orange(249$)");
+                total=249;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: " +
+                        "Silla Gamer New Racing Pro Cuero rojo/negro Orange(399$)");
+                total=399;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void Escritorios(){
+        System.out.println("-----ESCRITORIOS-----");
+        System.out.println("""
+                |1|-  Escritorios Gamer-----------------------------
+                |2|-  Escritorios Vintage---------------------------
+                |3|-  Escritorios Blancos---------------------------
+                """);
+        int escritorios = ncs.nextInt();
+        switch (escritorios){
+            case 1:
+                this.EscritoriosGamer();
+                break;
+            case 2:
+                this.EscritoriosVintage();
+                break;
+            case 3:
+                this.EscritoriosBlancos();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+        }
+    }
+    public void EscritoriosGamer(){
+        System.out.println("""
+                |----------------------ESCRITORIOS GAMER------------------------------|- Precio ----|
+                |1|- Escritorio Gamer Sirion MDP negro/ Rojo Bonno--------------------|- S/ 499 ----|
+                |2|- Escritorio Gamer Odin OfficeSpace--------------------------------|- S/ 699 ----|
+                """);
+        int EscritoriosGamer=ncs.nextInt();
+        switch(EscritoriosGamer){
+            case 1:
+                System.out.println("Ha seleccionado: Escritorio Gamer Sirion MDP negro/ Rojo Bonno. (499$)");
                 total=499;
                 this.total();
                 this.vuelto();
                 break;
             case 2:
-                System.out.println("Ha seleccionado: Escritorio Gamer Odin (699$)");
+                System.out.println("Ha seleccionado: Escritorio Gamer Odin OfficeSpace. (699$)");
                 total=699;
                 this.total();
                 this.vuelto();
                 break;
-            case 3:
-                System.out.println("Ha seleccionado: Escritorio Organizador Vintage (329$)");
-                total=329;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void EscritoriosVintage(){
+        System.out.println("""
+                |----------------------ESCRITORIOS VINTAGE------------------------------------|- Precio ----|
+                |1|- Escritorio Organizador Vintage Mirandah Ventitas Home Duna y Blanco------|- S/ 540 ----|
+                |2|- Escritorio Vintage Moderno Alice Alto 151cm------------------------------|- S/ 1950 ---|
+                """);
+        int EscritoriosGamer=ncs.nextInt();
+        switch(EscritoriosGamer){
+            case 1:
+                System.out.println("Ha seleccionado:" +
+                        "Escritorio Organizador Vintage Mirandah Ventitas Home Duna y Blanco (540$)");
+                total=540;
                 this.total();
                 this.vuelto();
                 break;
-            case 4:
-                System.out.println("Ha seleccionado: Escritorio Vintage Moderno Alice (799$)");
-                total=799;
+            case 2:
+                System.out.println("Ha seleccionado: Escritorio Vintage Moderno Alice Alto 151cm (1950$)");
+                total=1950;
                 this.total();
                 this.vuelto();
                 break;
             default:
-                System.out.println("Opción no válida.");
+                System.out.println("Opción no valida");
+        }
+
+    }
+    public void EscritoriosBlancos(){
+        System.out.println("""
+                |----------------------ESCRITORIOS BLANCOS--------------------------|- Precio ----|
+                |1|- Escritorio Manaus MDP Blanco-----------------------------------|- S/ 249 ----|
+                |2|- Escritorio astana Melamina Blanco------------------------------|- S/ 499 ----|
+                """);
+        int EscritoriosBlancos=ncs.nextInt();
+        switch(EscritoriosBlancos){
+            case 1:
+                System.out.println("Ha seleccionado: Escritorio Manaus MDP Blanco. (249$)");
+                total=249;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Escritorio astana Melamina Blanco (499$)");
+                total=499;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void mueblesCocina() {
+        System.out.println("---MUEBLES DE COCINA---");
+        System.out.println("""
+                |1|-  Alacenas de Cocina-----------------------------
+                |2|-  Tableros de Cocina-----------------------------
+                """);
+        int MuCocina=ncs.nextInt();
+        switch(MuCocina){
+            case 1:
+                this.AlacenasCocina();
+                break;
+            case 2:
+                this.tablerosCocina();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void AlacenasCocina(){
+        System.out.println("""
+                |---------------------- ALACENAS DE COCINA------------------------------|- Precio ----|
+                |1|- Mueble de cocina dalia MDP 60 cm Blanco Orange---------------------|- S/ 279 ----|
+                |2|- Mueble de cocina Madison 90 cm Orange------------------------------|- S/ 419 ----|
+                """);
+        int alacenascocina=ncs.nextInt();
+        switch(alacenascocina){
+            case 1:
+                System.out.println("Ha seleccionado: Mueble de cocina dalia MDP 60 cm Blanco Orange (279$)");
+                total=279;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Mueble de cocina Madison 90 cm Orange (419$)");
+                total=419;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
+        }
+    }
+    public void tablerosCocina(){
+        System.out.println("""
+                |---------------------- TABLEROS DE COCINA---------------------------------|- Precio ----|
+                |1|- Tablero mesada para a muebles Madrid----------------------------------|- S/ 249 ----|
+                |2|- Tablero para Mueble de cocina Madesa 150 cm Gris----------------------|- S/ 269 ----|
+                """);
+        int Tableroscocina=ncs.nextInt();
+        switch(Tableroscocina){
+            case 1:
+                System.out.println("Ha seleccionado: Tablero mesada para a muebles Madrid (249$)");
+                total=249;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Ha seleccionado: Tablero para Mueble de cocina Madesa 150 cm Gris (269$)");
+                total=269;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no valida");
         }
     }
 
-    public void mueblesCocina() {
-        System.out.println("\n---MUEBLES DE COCINA---");
-        System.out.println("1.- Mueble de cocina Dalia MDP 60 cm Blanco Orange (249.90$)");
-        System.out.println("2.- Mueble de cocina Madison 90 cm Orange (359$)");
-        System.out.println("3.- Tablero mesada para muebles Madrid (249$)");
-        System.out.println("4.- Tablero para Mueble de cocina Madesa 150 cm Gris (189$)");
-    }
     public void TerrazasYAireLibre(){
         System.out.println("---TERRAZAS Y AIRE LIBRE---");
         System.out.println("""
@@ -566,7 +886,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opcion no valida");
         }
     }
-
     public void jardineria(){
         System.out.println("---JARDINERIA---");
         System.out.println("""
@@ -795,7 +1114,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void alfombrasYTapetes() {
         System.out.println("\n---ALFOMBRAS Y TAPETES---");
         System.out.println("1.- Alfombra de exterior Cuadros Gris 230x160 Orange (229$)");
@@ -820,7 +1138,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void velasYPortavelas() {
         System.out.println("\n---VELAS Y PORTAVELAS---");
         System.out.println("1.- Vela perfumada Misionera Tipo 24 x 2 unidades Amarillo (9.50$)");
@@ -845,7 +1162,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void persianasYCortinas() {
         System.out.println("\n---PERSIANAS Y CORTINAS---");
         System.out.println("1.- Persiana horizontal PVC Blanco 100x165cm Orange (40$)");
@@ -870,7 +1186,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void productosEnTendencia() {
         System.out.println("\n---PRODUCTOS EN TENDENCIA---");
         System.out.println("1.- Globo Terráqueo Retro Mango De Madera 13.5cm Atmosphera (22.33$)");
@@ -926,7 +1241,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void combosDeBano() {
         System.out.println("\n---COMBOS DE BAÑOS---");
         System.out.println("1.- COMBO Trebol: Tanque para inodoro Rapid Jet Premium Blanco + Taza para inodoro Rapid Jet Plus Blanco (197.70$)");
@@ -951,7 +1265,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void inodorosYAsientos() {
         System.out.println("\n---INODOROS Y ASIENTOS---");
         System.out.println("1.- Inodoro One Piece Buzios botón superior + Asiento Vallarta Blanco Italgrif (334$)");
@@ -983,7 +1296,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void lavatoriosYPedestales() {
         System.out.println("\n---LAVATORIOS Y PEDESTALES---");
         System.out.println("1.- Lavatorio Cancún Boné Italgrif (114$)");
@@ -1015,7 +1327,6 @@ public class PROMART_JULIACA{
                 System.out.println("Opción no válida.");
         }
     }
-
     public void mueblesAuxiliares() {
         System.out.println("\n---MUEBLES AUXILIARES DE BAÑO---");
         System.out.println("1.- Organizador de baño RTA Design Málaga (289$)");
@@ -1038,6 +1349,112 @@ public class PROMART_JULIACA{
                 break;
             default:
                 System.out.println("Opción no válida.");
+        }
+    }
+    public void cocina() {
+        System.out.println("----COCINA----");
+        System.out.println("""
+            |1|-  Muebles de cocina --------------------------
+            |2|-  Organizadores de cocina---------------------
+            """);
+
+        int cocina = ncs.nextInt();
+        switch (cocina) {
+            case 1:
+                this.muebleCocina();
+                break;
+            case 2:
+                this.organizadoresCocina();
+                break;
+            default:
+                System.out.println("Opción no válida para Cocina.");
+        }
+    }
+    public void muebleCocina() {
+        System.out.println("-----MUEBLES DE COCINA------");
+        System.out.println("""
+        |1|- Reposteros de cocina modulares---------------
+        """);
+
+        int  CocinaMUebles = ncs.nextInt();
+        switch (CocinaMUebles) {
+            case 1:
+                this.reposterosModulares();
+                break;
+            default:
+                System.out.println("Opción no válida para CocinaMuebles.");
+        }
+    }
+    public void reposterosModulares() {
+        System.out.println("---Reposteros de cocina modulares---");
+        System.out.println("""
+        |1|-  Combos Modulares-------------------------
+        """);
+
+        int CModulares = ncs.nextInt();
+        switch (CModulares) {
+            case 1:
+                this.combosModulares();
+                break;
+            default:
+                System.out.println("Opción no válida para CModulares.");
+        }
+    }
+    public void combosModulares() {
+        System.out.println("""
+        |1|- "Mueble de Cocina Modular Orange para Microondas con Cajonera 140cm Blanco/Rojo"
+    """);
+        int CM = ncs.nextInt();
+        switch (CM) {
+            case 1:
+                System.out.println("Ha seleccionado: " +
+                        "Mueble de Cocina Modular Orange para Microondas con Cajonera 140cm Blanco/Rojo(1839$)");
+                total=1839;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no válida.");
+        }
+    }
+    public void organizadoresCocina() {
+        System.out.println("----ORGANIZADORES DE COCINA----");
+        System.out.println("""
+        |1|- Fruteros y verduleros--------------------------
+        """);
+
+        int FT = ncs.nextInt();
+        switch (FT) {
+            case 1:
+                this.fruterosVerduleros();
+                break;
+            default:
+                System.out.println("Opción no válida para Organizadores de cocina.");
+        }
+    }
+    public void fruterosVerduleros() {
+        System.out.println("""
+       |------------------------- Nombre del Producto ---------------------------------|- Precio ---|
+       |1|- Organizador de frutas modular M Orange-------------------------------------|- S/ 28 ----|
+       |2|- Organizador Slim 3 niveles con ruedas--------------------------------------|- S/ 9.90 --|
+       """);
+
+        int OF = ncs.nextInt();
+        switch (OF) {
+            case 1:
+                System.out.println("Organizador de frutas modular M Orange-------------------------------------|- S/ 28 ----|");
+                total=28;
+                this.total();
+                this.vuelto();
+                break;
+            case 2:
+                System.out.println("Organizador Slim 3 niveles con ruedas--------------------------------------|- S/  9.90 -|");
+                total=9.90;
+                this.total();
+                this.vuelto();
+                break;
+            default:
+                System.out.println("Opción no válida para Organizadores de Frutas.");
         }
     }
 
@@ -2432,1915 +2849,578 @@ public class PROMART_JULIACA{
     // FIN DE CODIGO DE YEYSON
     //CDIGO DE DUA
     public void gasfiteria(){
-        Scanner invoker=new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        do{
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""
                     1 Ver todo Accesorios de gasfiteria
                     2 Sumideros y registros
                     3 Otros accesorios de gasfitería
-                    0 salir
+                    0 salir al menu principal
                     """);
-            op= invoker.nextInt();
-            switch (op){
-                case 1:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
+        opcion= ncs.nextInt();
+        switch (opcion){
+            case 1:
+                System.out.println("TENEMOS LO SIGUIENTE");
+                System.out.println();
+                System.out.println("""
                                 1 Accesorios galvanizados
-                                0 salir
+                                0 salir al menu principal
                                 """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            do {
-                                System.out.println("TENEMOS:");
-                                System.out.println();
-                                System.out.println("""
+                opcion = ncs.nextInt();
+                if (opcion == 1) {
+                    System.out.println("TENEMOS:");
+                    System.out.println();
+                    System.out.println("""
                                         1 Niple galvanizado 1" x 1 1/2" Werken S/2.50
-                                        0 salir
+                                        0 salir al menu principal
                                         """);
-                                op1 = invoker.nextInt();
-                                if (op1 == 1) {
-                                    total_a_pagar = total_a_pagar + 2.50;
-                                    System.out.println("gracias por comprar  Niple galvanizado 1\" x 1 1/2\" Werken");
-                                    System.out.println("_______________________________________________________");
-                                    igv = (total_a_pagar) * 0.18;
-                                    subtotal = (total_a_pagar) - igv;
-                                    this.pago_y_vuelto();
-                                }
-                                else if (op1==0){
-                                    System.out.println("----RETROCEDIENDO----");
-                                    this.secciondecategorias();
-                                    break;
-                                }
-                                else {
-                                    System.out.println("opcion no valida");
-                                }
-                            }
-                            while (op != 0);
-                            System.out.println("----RETROCEDIENDO----");
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
+                    opcion = ncs.nextInt();
+                    if (opcion==1){
+                        System.out.println("Cuantas va a querer");
+                        cant_compra = ncs.nextInt();
+                        igv=(cant_compra*2.5)*0.18;
+                        subtotal=(cant_compra*2.5)-igv;
+                        this.pago_y_vuelto();
                     }
-                    while (op1!=0);
-                    System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Válvula Anti-olores / Anti-insectos Coflex S/14.90
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 14.90;
-                            System.out.println("gracias por comprar  Válvula Anti-olores / Anti-insectos Coflex");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
+                    else if (opcion==0) {
+                        System.out.println("----RETROCEDIENDO----");
+                        this.menuprincipal();
                     }
-                    while (op1!=0);
-                    System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 3:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Cinta teflón 1/2"x0.075mmx10mts Metusa S/1
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 1;
-                            System.out.println("gracias por comprar  Cinta teflón 1/2\"x0.075mmx10mts Metusa");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
+                    else{
 
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
                     }
-                    while (op1!=0);
+                }
+                else if (opcion==0){
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-                    break;
-                default:
+                    this.menuprincipal();
+                }
+                else {
                     System.out.println("opcion no valida");
-                    break;
-            }
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Válvula Anti-olores / Anti-insectos Coflex S/14
+                                        0 salir al menu principal
+                                        """);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*14)*0.18;
+                    subtotal=(cant_compra*14)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
+                    System.out.println("----RETROCEDIENDO----");
+                    this.menuprincipal();
+                }
+                else{
 
+                }
+                break;
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Cinta teflón 1/2"x0.075mmx10mts Metusa S/1
+                                        0 salir al menu principal
+                                        """);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*1)*0.18;
+                    subtotal=(cant_compra*1)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
+                    System.out.println("----RETROCEDIENDO----");
+                    this.menuprincipal();
+                }
+                else{
+
+                }
+                break;
+            case 0:
+                System.out.println("----RETROCEDIENDO----");
+                this.menuprincipal();
         }
-        while (op!=0);
-        System.out.println("----RETROCEDIENDO----");
     }
     public void iluminacion(){
-        Scanner invoker=new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        do{
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
-                    1 Ver todo Iluminación smart
-                    2 Focos smart
-                    3 Plafones LED smart
-                    4 Tiras LED
-                    5 Interruptores inteligentes
-                    0 salir
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""                  
+                    1 Focos smart
+                    2 Plafones LED smart
+                    3 Tiras LED
+                    4 Interruptores inteligentes
+                    0 salir al menu principal
                     """);
-            op= invoker.nextInt();
-            switch (op){
-                case 1:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Focos smart
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            do {
-                                System.out.println("TENEMOS:");
-                                System.out.println();
-                                System.out.println("""
-                                        1 XIAOMI: Foco Led Xiaomi Smart Inteligente Color Google Home Alexa S/119 
-                                        0 salir
-                                        """);
-                                op1 = invoker.nextInt();
-                                if (op1 == 1) {
-                                    total_a_pagar = total_a_pagar + 119;
-                                    System.out.println("gracias por comprar Foco Led Xiaomi Smart Inteligente Color Google Home Alexa ");
-                                    System.out.println("_______________________________________________________");
-                                    igv = (total_a_pagar) * 0.18;
-                                    subtotal = (total_a_pagar) - igv;
-                                    total_a_pagar = subtotal + igv;
-                                    System.out.println("SUBTOTAL " + subtotal);
-                                    System.out.println("IGV " + igv);
-                                    System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                                    System.out.println("_______________________________________________________");
-                                    System.out.println("ingrese lo que va a pagar es soles por favor");
-                                    cant_de_dinero = ncs.nextDouble();
-                                    if (cant_de_dinero < total_a_pagar) {
-                                        vuelto = cant_de_dinero - total_a_pagar;
-                                        System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                        System.out.println("¿CUANTO VA A AUMENTAR?");
-                                        aumentar = ncs.nextDouble();
-                                        if (aumentar > vuelto) {
-                                            total = aumentar - (-vuelto);
-                                            System.out.println("""
-                                                Espere....................
-                                                """);
-                                            System.out.println("GRACIAS POR COMPLETAR");
-                                            System.out.println("su vuelto es " + total + " soles");
-                                        } else if (aumentar < vuelto) {
-                                            System.out.println("CANCELAMOS SU COMPRA");
-                                        } else {
-
-                                        }
-                                    } else if (cant_de_dinero > total_a_pagar) {
-                                        System.out.println("""
-                                            Espere....................................
-                                            """);
-                                        vuelto = cant_de_dinero - total_a_pagar;
-                                        System.out.println("su vuelto es " + vuelto + " soles");
-                                    } else if (cant_de_dinero == total_a_pagar) {
-                                        System.out.println("");
-                                    } else {
-
-                                    }
-                                    System.out.println("¿Desea hacer mas compras?");
-                                    System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                                    opcion = ncs.nextInt();
-                                    switch (opcion) {
-                                        case 1:
-                                            this.secciondecategorias();
-                                            break;
-                                        case 2:
-                                            System.out.println("GRACIAS POR SU RESPUESTA");
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                                else if (op1 == 0) {
-                                    System.out.println("----RETROCEDIENDO----");
-                                    this.secciondecategorias();
-                                } else {
-                                    System.out.println("opcion no valida");
-                                }
-                            }
-                            while (op != 0);
-                            System.out.println("----RETROCEDIENDO----");
-                        } else if (op1 == 0) {
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        } else {
-                            System.out.println("opcion no valida");
-                        }
-                    }
-                    while (op1!=0);
+        opcion= ncs.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                        1 Foco Led Xiaomi Smart Inteligente Color Google Home Alexa S/119
+                        0 salir al menu principal
+                        """);
+                opcion = ncs.nextInt();
+                if (opcion == 1) {
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv = (cant_compra * 119) * 0.18;
+                    subtotal = (cant_compra * 119) - igv;
+                    this.pago_y_vuelto();
+                } else if (opcion == 0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 XIAOMI: Foco Inteligente Mi Bulb Led Smart Essentials S/79
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 79;
-                            System.out.println("gracias por comprar XIAOMI: Foco Inteligente Mi Bulb Led Smart Essentials ");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
+                    this.menuprincipal();
+                } else {
 
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                        1 Plafón smart led 48W Multicolor Lightech S/189
+                        0 salir al menu principal
+                        """);
+                opcion = ncs.nextInt();
+                if (opcion == 1) {
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv = (cant_compra * 189) * 0.18;
+                    subtotal = (cant_compra * 189) - igv;
+                    this.pago_y_vuelto();
+                } else if (opcion == 0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
+                    this.menuprincipal();
+                } else {
 
-                case 3:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Dixon: Plafón Decosmart Redondo con Bluetooth Dixon S/249
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 249;
-                            System.out.println("gracias por comprar Dixon: Plafón Decosmart Redondo con Bluetooth Dixon  ");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                }
+                break;
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                        1 Retroiluminación de TV Inteligente 55-65" RGBIC Nexxt S/279
+                        0 salir al menu principal
+                        """);
+                opcion = ncs.nextInt();
+                if (opcion == 1) {
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv = (cant_compra * 279) * 0.18;
+                    subtotal = (cant_compra * 279) - igv;
+                    this.pago_y_vuelto();
+                } else if (opcion == 0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 4:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Retroiluminación de TV Inteligente 55-65" RGBIC Nexxt S/279
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 279;
-                            System.out.println("gracias por comprar Retroiluminación de TV Inteligente 55-65\" RGBIC Nexxt ");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
+                    this.menuprincipal();
+                } else {
 
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                }
+                break;
+            case 4:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                        1 Interruptor de 3 circuitos smart wifi Nexxt S/99
+                        0 salir al menu principal
+                        """);
+                opcion = ncs.nextInt();
+                if (opcion == 1) {
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv = (cant_compra * 99) * 0.18;
+                    subtotal = (cant_compra * 99) - igv;
+                    this.pago_y_vuelto();
+                } else if (opcion == 0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 5:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Interruptor de 3 circuitos smart wifi Nexxt S/99
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 99;
-                            System.out.println("gracias por comprar Interruptor de 3 circuitos smart wifi Nexxt");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
+                    this.menuprincipal();
+                } else {
 
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
-                                        """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
-                    System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-                    break;
-                default:
-                    break;
-            }
-
+                }
+                break;
         }
-        while (op!=0);
-        System.out.println("----RETROCEDIENDO----");
     }
     public void pinturasyacabados(){
-        Scanner invoker=new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        double total=0;
-        do{
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""
                     1 Pinturas Tekno
                     2 Pinturas CPP
                     3 Pinturas Pato
                     4 Pinturas Vencedor
                     5 Pinturas American Colors
-                    0 salir
+                    0 salir al menu principal
                     """);
-            op= invoker.nextInt();
-            switch (op){
-                case 1:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Tekno latex teknocolor Blanco 1 galón S/95
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 95;
-                            System.out.println("gracias por comprar Tekno latex teknocolor Blanco 1 galón");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+        opcion= ncs.nextInt();
+        switch (opcion){
+            case 1:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Tekno latex teknocolor Blanco 1 galón S/95
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*95)*0.18;
+                    subtotal=(cant_compra*95)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Latex Pato CPP Blanco 1 galón S/39
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 39;
-                            System.out.println("gracias por comprar Latex Pato CPP Blanco 1 galón");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Latex Pato CPP Blanco 1 galón S/39
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*39)*0.18;
+                    subtotal=(cant_compra*39)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-
-                case 3:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Latex Pato CPP Rojo Teja 1 galón S/39
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 39;
-                            System.out.println("gracias por comprar Latex Pato CPP Rojo Teja 1 galón");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Latex Pato CPP Rojo Teja 1 galón S/39
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*39)*0.18;
+                    subtotal=(cant_compra*39)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 4:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Supermate antibacterial nuevo Blanco Decora 1 galón Vencedor S/95
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 95;
-                            System.out.println("gracias por comprar Supermate antibacterial nuevo Blanco Decora 1 galón Vencedor");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 4:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Supermate antibacterial nuevo Blanco Decora 1 galón Vencedor S/95
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*95)*0.18;
+                    subtotal=(cant_compra*95)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 5:
-                    do{
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Pintura Latex American Colors Satinado Gris Clásico 1 galón S/129
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 129;
-                            System.out.println("gracias por comprar Pintura Latex American Colors Satinado Gris Clásico 1 galón");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 5:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Pintura Latex American Colors Satinado Gris Clásico 1 galón S/129
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1!=0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*129)*0.18;
+                    subtotal=(cant_compra*129)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-                    break;
-                default:
-                    System.out.println("opcion no valida");
-                    break;
-            }
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 0:
+                System.out.println("----RETROCEDIENDO----");
+                this.menuprincipal();
+                break;
+            default:
+                System.out.println("opcion no valida");
+                break;
         }
-        while (op!=0);
-        System.out.println("----RETROCEDIENDO----");
     }
     public void ferreteriaypuertas() {
-        Scanner invoker = new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        double total = 0;
-        do {
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""
                     1 Puertas contraplacadas
                     2 Puertas de madera
                     3 Puertas plegables
                     4 Marcos para puertas
-                    0 salir
+                    0 salir al menu principal
                     """);
-            op = invoker.nextInt();
-            switch (op) {
-                case 1:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Puerta blanca contraplacada Palace 40x80x2.07 Dimfer S/229
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 229;
-                            System.out.println("gracias por comprar Puerta blanca contraplacada Palace 40x80x2.07 Dimfer");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+        opcion= ncs.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Puerta blanca contraplacada Palace 40x80x2.07 Dimfer S/229
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*229)*0.18;
+                    subtotal=(cant_compra*229)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Puerta Hdf Decosint Square Blanca 40x800x2070 Dimfer S/119
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 119;
-                            System.out.println("gracias por comprar Puerta Hdf Decosint Square Blanca 40x800x2070 Dimfer");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Puerta Hdf Decosint Square Blanca 40x800x2070 Dimfer S/119
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*119)*0.18;
+                    subtotal=(cant_compra*119)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 3:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Puerta plegable Guayana Blanca 6mm 70x203cm Flexi Space S/39
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 39;
-                            System.out.println("gracias por comprar Puerta plegable Guayana Blanca 6mm 70x203cm Flexi Space");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Puerta plegable Guayana Blanca 6mm 70x203cm Flexi Space S/39
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*39)*0.18;
+                    subtotal=(cant_compra*39)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 4:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Marco Pino 32x90x2.13 Dimfer S/130
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 130;
-                            System.out.println("gracias por comprar Marco Pino 32x90x2.13 Dimfer");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 4:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Marco Pino Pre Acabado 32x60x2.13 Lucso S/85
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*85)*0.18;
+                    subtotal=(cant_compra*85)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-            }
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 0:
+                System.out.println("----RETROCEDIENDO----");
+                this.menuprincipal();
+                break;
+            default:
+                System.out.println("opcion no valida");
         }
-        while (op != 0) ;
-        System.out.println("----RETROCEDIENDO----");
     }
     public void limpieza(){
-        Scanner invoker = new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        double total = 0;
-        do {
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""
                     1 Limpieza de baños
                     2 Limpieza de cocinas
                     3 Limpieza de sala y comedor
                     4 Limpieza de pisos
                     5 Limpieza de piscinas
-                    0 salir
+                    0 salir al menu principal
                     """);
-            op = invoker.nextInt();
-            switch (op) {
-                case 1:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Desatorador de baño líquido 980 ml Sapolio S/14
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 14;
-                            System.out.println("gracias por comprar Desatorador de baño líquido 980 ml Sapolio");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+        opcion=ncs.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Limpiador Cif Anti Hongos Doypack 450ml S/8
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*8)*0.18;
+                    subtotal=(cant_compra*8)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Paño de microfibra 40x40cm 6 unidades Orange S/11
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 11;
-                            System.out.println("gracias por comprar Paño de microfibra 40x40cm 6 unidades Orange");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Paño de microfibra 40x40cm 6 unidades Orange S/11
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*11)*0.18;
+                    subtotal=(cant_compra*11)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-
-                case 3:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Limpiavidrios Sapolio 5lt S/30
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 30;
-                            System.out.println("gracias por comprar Limpiavidrios Sapolio 5lt");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Limpiavidrios Sapolio 5lt S/30
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*30)*0.18;
+                    subtotal=(cant_compra*30)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 4:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Limpiador piso madera y laminado 700ml Binner S/31
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 31;
-                            System.out.println("gracias por comprar Limpiador piso madera y laminado 700ml Binner");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 4:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Limpiador piso madera y laminado 700ml Binner S/31
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*31)*0.18;
+                    subtotal=(cant_compra*31)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 5:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Cloro en pastillas para piscinas 1 kg | 5 pastillas de 200 gr Pluschlor S/39
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 39;
-                            System.out.println("gracias por comprar Cloro en pastillas para piscinas 1 kg | 5 pastillas de 200 gr Pluschlor");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 5:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Cloro en pastillas para piscinas 1 kg | 5 pastillas de 200 gr Pluschlor S/39.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*39.9)*0.18;
+                    subtotal=(cant_compra*39.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-                default:
-                    System.out.println("opcion no valida");
-            }
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 0:
+                System.out.println("----RETROCEDIENDO----");
+                this.menuprincipal();
+            default:
+                System.out.println("opcion no valida");
         }
-        while (op != 0) ;
-        System.out.println("----RETROCEDIENDO----");
     }
     public void automotriz(){
-        Scanner invoker = new Scanner(System.in);
-        int op;
-        int op1;
-        double igv, subtotal;
-        double total = 0;
-        do {
-            System.out.println("TENEMOS LO SIGUIENTE:");
-            System.out.println();
-            System.out.println("""
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println();
+        System.out.println("""
                     1 Infladores de llantas y accesorios
                     2 Llantas aro 13
                     3 Llantas aro 14
@@ -4352,3081 +3432,275 @@ public class PROMART_JULIACA{
                     9 Llantas aro 20
                     10 Llantas aro 21
                     11 Llantas aro 22
-                    0 salir
+                    0 salir al menu principal
                     """);
-            op = invoker.nextInt();
-            switch (op) {
-                case 1:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Tapones regulares para pitón x4 unidades Slime S/10
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 10;
-                            System.out.println("gracias por comprar Tapones regulares para pitón x4 unidades Slime");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+        opcion= ncs.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Tapones regulares para pitón x4 unidades Slime S/10.70
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*10.7)*0.18;
+                    subtotal=(cant_compra*10.7)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 2:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta GOODYEAR Direction Touring 175/70R13 S/205
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 205;
-                            System.out.println("gracias por comprar Llanta GOODYEAR Direction Touring 175/70R13");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 2:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta GOODYEAR Direction Touring 175/70R13 S/205.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*205.9)*0.18;
+                    subtotal=(cant_compra*205.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
 
-                case 3:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta GOODYEAR Direction Tour 185/70R14 S/184
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 184;
-                            System.out.println("gracias por comprar Llanta GOODYEAR Direction Tour 185/70R14");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+            case 3:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta GOODYEAR Direction Tour 185/70R14 S/184.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*184.9)*0.18;
+                    subtotal=(cant_compra*184.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 4:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta GOODYEAR Direction Sport 195/65R15 S/304
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 304;
-                            System.out.println("gracias por comprar Llanta GOODYEAR Direction Sport 195/65R15");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 4:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta GOODYEAR Direction Sport 195/65R15 S/304.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*304.9)*0.18;
+                    subtotal=(cant_compra*304.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 5:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llantas GOODYEAR 205/55R16 Direction Sport 91H Negro S/244
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 244;
-                            System.out.println("gracias por comprar Llantas GOODYEAR 205/55R16 Direction Sport 91H Negro");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 5:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llantas GOODYEAR 205/55R16 Direction Sport 91H Negro S/244.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*244.9)*0.18;
+                    subtotal=(cant_compra*244.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 6:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta 245/65R17 General Tire Grabber At 111H S/512
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 512;
-                            System.out.println("gracias por comprar Llanta 245/65R17 General Tire Grabber At 111H");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 6:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta 245/65R17 General Tire Grabber At 111H S/512.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*512.9)*0.18;
+                    subtotal=(cant_compra*512.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 7:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta Rydanz Raleigh R06 265/60R18 para Toyota, Ford, Jeep S/437
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 437;
-                            System.out.println("gracias por comprar Llanta Rydanz Raleigh R06 265/60R18 para Toyota, Ford, Jeep");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 7:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta Rydanz Raleigh R06 265/60R18 para Toyota, Ford, Jeep S/437.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*437.9)*0.18;
+                    subtotal=(cant_compra*437.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
 
-                case 8:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta Pirelli P Zero 235/35ZR19 87Y S/1590
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 1590;
-                            System.out.println("gracias por comprar Llanta Pirelli P Zero 235/35ZR19 87Y");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+            case 8:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta Pirelli P Zero 235/35ZR19 87Y S/1590.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*1590.9)*0.18;
+                    subtotal=(cant_compra*1590.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 9:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta Rydanz Raleigh R06 275/45R20 para Audi, Ford, BMW S/576
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 576;
-                            System.out.println("gracias por comprar Llanta Rydanz Raleigh R06 275/45R20 para Audi, Ford, BMW");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 9:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta 235/35Zr20 Pirelli Pzero 88Y S/2293.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*2293.9)*0.18;
+                    subtotal=(cant_compra*2293.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 10:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta 295/40Zr21 Pirelli Pzero 111Y S/2620
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 2620;
-                            System.out.println("gracias por comprar Llanta 295/40Zr21 Pirelli Pzero 111Y");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 10:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 CLlanta 295/40Zr21 Pirelli Pzero 111Y S/2620.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*2620.9)*0.18;
+                    subtotal=(cant_compra*2620.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 11:
-                    do {
-                        System.out.println("TENEMOS LO SIGUIENTE");
-                        System.out.println();
-                        System.out.println("""
-                                1 Llanta Pirelli Scorpion Zero AS 265/40R22 106Y S/2927
-                                0 salir
-                                """);
-                        op1 = invoker.nextInt();
-                        if (op1 == 1) {
-                            total_a_pagar = total_a_pagar + 2927;
-                            System.out.println("gracias por comprar Llanta Pirelli Scorpion Zero AS 265/40R22 106Y");
-                            System.out.println("_______________________________________________________");
-                            igv = (total_a_pagar) * 0.18;
-                            subtotal = (total_a_pagar) - igv;
-                            total_a_pagar = subtotal + igv;
-                            System.out.println("SUBTOTAL " + subtotal);
-                            System.out.println("IGV " + igv);
-                            System.out.println("TOTAL A PAGAR " + total_a_pagar);
-                            System.out.println("_______________________________________________________");
-                            System.out.println("ingrese lo que va a pagar es soles por favor");
-                            cant_de_dinero = ncs.nextDouble();
-                            if (cant_de_dinero < total_a_pagar) {
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("A UD le falta aumentar " + (-vuelto) + " soles");
-                                System.out.println("¿CUANTO VA A AUMENTAR?");
-                                aumentar = ncs.nextDouble();
-                                if (aumentar > vuelto) {
-                                    total = aumentar - (-vuelto);
-                                    System.out.println("""
-                                                Espere....................
-                                                """);
-                                    System.out.println("GRACIAS POR COMPLETAR");
-                                    System.out.println("su vuelto es " + total + " soles");
-                                } else if (aumentar < vuelto) {
-                                    System.out.println("CANCELAMOS SU COMPRA");
-                                } else {
-
-                                }
-                            } else if (cant_de_dinero > total_a_pagar) {
-                                System.out.println("""
-                                            Espere....................................
-                                            """);
-                                vuelto = cant_de_dinero - total_a_pagar;
-                                System.out.println("su vuelto es " + vuelto + " soles");
-                            } else if (cant_de_dinero == total_a_pagar) {
-                                System.out.println("");
-                            } else {
-
-                            }
-                            System.out.println("¿Desea hacer mas compras?");
-                            System.out.println("""
-                                        |1| SI
-                                        |2| NO
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 11:
+                System.out.println("TENEMOS:");
+                System.out.println();
+                System.out.println("""
+                                        1 Llanta Pirelli Scorpion Zero AS 265/40R22 106Y S/2927.90
+                                        0 salir al menu principal
                                         """);
-                            opcion = ncs.nextInt();
-                            switch (opcion) {
-                                case 1:
-                                    this.secciondecategorias();
-                                    break;
-                                case 2:
-                                    System.out.println("GRACIAS POR SU RESPUESTA");
-                                    break;
-                                default:
-                                    System.out.println("opcion no valida");
-                                    break;
-                            }
-                        }
-                        else if (op1==0){
-                            System.out.println("----RETROCEDIENDO----");
-                            this.secciondecategorias();
-                            break;
-                        }
-                        else {
-                            System.out.println("opcion no valida");
-                        }
-                        break;
-                    }
-                    while (op1 != 0);
+                opcion = ncs.nextInt();
+                if (opcion==1){
+                    System.out.println("Cuantas va a querer");
+                    cant_compra = ncs.nextInt();
+                    igv=(cant_compra*2927.9)*0.18;
+                    subtotal=(cant_compra*2927.9)-igv;
+                    this.pago_y_vuelto();
+                }
+                else if (opcion==0) {
                     System.out.println("----RETROCEDIENDO----");
-                    break;
-                case 0:
-                    System.out.println("----RETROCEDIENDO----");
-                    this.secciondecategorias();
-                    break;
-                default:
-                    System.out.println("opcion no valida");
-            }
+                    this.menuprincipal();
+                }
+                else{
+                }
+                break;
+            case 0:
+                System.out.println("----RETROCEDIENDO----");
+                this.menuprincipal();
+                break;
+            default:
+                System.out.println("opcion no valida");
         }
-        while (op!=0) ;
-        System.out.println("----RETROCEDIENDO----");
     }
     //FIN DE CODIGO DE DUA
-    //CODIGO DE ALEX
-    public void OPCIONDORMITORIOS() {
-        Scanner invoker = new Scanner(System.in);
-        int opcion;
-        int opcion1;
-        int opcionn;
-        double igv, subtotal;
-        double total = 0;
-        do {
 
-
-            System.out.println("TENEMOS LOS SIGUIENTES COLCHONES");
-            System.out.println();
-            System.out.println("""
-                    1 COLCHONES 1 PLAZA
-                    2 COLCHONES 1.5 PLAZA
-                    3 COLCHONES 2 PLAZAS
-                    4 COLCHONES QUEEN
-                    5 COLCHONES KING
-                    0 SALIR""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion = invoker.nextInt();
-            switch (opcion) {
-                case 1://1 PLAZA
-                    do {
-                        System.out.println("""
-                                1.- Colchón Eden Plus 1 plaza Paraiso S/269
-                                2. Colchón Zebra 16 1.0x5 - 1 plaza Paraiso S/ 119
-                                3. Colchón Zebra 18 1.0x8 - 1 plaza Paraiso S/ 229
-                                0. SALIR
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 269;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println();
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 119;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-
-                            case 3:
-                                total = total + 229;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println();
-                                System.out.println("HASTA PRONTO");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println();
-                    break;
-
-
-                case 2://1.5 PLAZA
-                    do {
-                        System.out.println("""
-                                1. colchón Consul black 1.5 plazas Paraiso S/249
-                                2. Colchón Zebra 18 1.5x8 - 1.5 plazas Paraiso S/259
-                                3. Colchón Kayseri 1.5 plazas El cisne S/1250
-                                0. Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 249;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                            case 2:
-                                total = total + 259;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 1250;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("SALIENDO........................................");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-                case 3://	COLCHONES 2 PLAZAS
-                    do {
-                        System.out.println("""
-                                1. Colchón Super Star 2 plazas Paraiso S/529
-                                2. Colchón Consul Black 2 plazas Paraiso S/309
-                                3. Colchón Gravity 2 plazas Technodream S/1399
-                                0. Salir
-                                """);
-                        System.out.println("elija una de las opciones");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 529;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 309;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 1399;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("saliendo............");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-                case 4:
-                    do {
-                        System.out.println("""
-                                1.	Colchón Paraiso Lifestyles Pocket Queen S/619
-                                2.	Colchón Dynamic Queen El cisne S/ 1509
-                                3. Colchón Pure Fresh Queen Drimer S/2679
-                                0. Salir""");
-                        System.out.println("Selecciona una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 619;
-                                System.out.println();
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 1509;
-                                System.out.println();
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 2679;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("saliendo...........");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    } while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-
-                case 5:
-                    do {
-                        System.out.println("""
-                                1. Colchón Super Star King Paraiso S/ 769
-                                2. Colchón Ozono King Technodream S/2099
-                                3. Colchón Element King El cisne S/2320
-                                0. Salir""");
-                        System.out.println("selecciona una de las opciones");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 769;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 2099;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 2320;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("saliendo............");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-
-
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-            }
-
-        }
-        while (opcion != 0);
-        System.out.println("RETROCEDIENDO==================");
-    }
-
-    public void HERRAMIENTAS() {
-        Scanner invoker = new Scanner(System.in);
-        int opcion;
-        int opcion1;
-        int opcionn;
-        double igv, subtotal;
-        double total = 0;
-        do {
-//HERRAMIENTAS
-            System.out.println("TENEMOS LAS SIGUIENTES HERRAMIENTAS");
-            System.out.println();
-            System.out.println("""
-                    1 ESCALERAS DE ALUMINIO METAL Y  FIBRA
-                    2 ESCALERAS DE MADERA
-                    3 ESCALERAS TELESCOPICAS
-                    0 SALIR""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion = invoker.nextInt();
-            switch (opcion) {
-                case 1://1 ESCALERAS DE ALUMINIO METAL Y  FIBRA
-                    do {
-                        System.out.println("""
-                                1. Escalera Tijera de Acero 4 pasos Werken S/179
-                                2. Escalera tijera aluminio 05 pasos S/306
-                                3. Escalera tijera aluminio 4 pasos 120kg Botafogo S/299
-                                4. Escalera tijera aluminio 5 pasos 120kg Botafogo S/329
-                                5. Escalera metal de 3 pasos M&m S/139
-                                0. SALIR
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 179;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 306;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 299;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 329;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                total = total + 139;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println();
-                                System.out.println("HASTA PRONTO");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-
-                case 2://ESCALERAS DE MADERA
-                    do {
-                        System.out.println("""
-                                1. Escalera Tijera de madera 8 pasos Iforest S/129
-                                 2. Escalera Tijera de madera 10 pasos Iforest S/150
-                                 3. Escalera Steps Tijera de madera 6 pasos Iforest S/125
-                                0. Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 129;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 150;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 125;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("SALIENDO........................................");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-                case 3://ESCALERAS TELESCOPICAS
-                    do {
-                        System.out.println("""
-                                1. Escalera telescópica 24 pasos Now Laders S/1,643
-                                2. Escalera Telescópica Aluminio 24 pasos Jumbor S/669
-                                3. Escalera Telescopica 20 peldaños Soporta 175Kg Truper 16758 S/789
-                                4. Escalera telescopica 28 peldaños soporta 150kg truper 16748 S/999
-                                5. Escalera telescópica 20 peldaños, fibra de vidrio DIELECTRICO Truper S/1,199
-                                0. Salir
-                                """);
-                        System.out.println("elija una de las opciones");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 1643;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 669;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 789;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 999;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                total = total + 1199;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("saliendo............");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-            }
-        }
-        while (opcion != 0);
-        System.out.println("RETROCEDIENDO==================");
-    }
-
-    public void OPCIONCONSTRUCCION() {
-        Scanner invoker = new Scanner(System.in);
-        int opcion;
-        int opcion1;
-        int opcionn;
-        double igv, subtotal;
-        double total = 0;
-        do {
-//Construccion
-
-            System.out.println("TENEMOS ESTAS HERRAMIENTAS PARA CONSTRUCCION");
-            System.out.println();
-            System.out.println("""
-                    1 PALAS Y PICOS
-                    2 CARRETILLAS
-                    3 OTRAS HERRAMIENTAS DE CONSTRUCCION
-                    0 SALIR""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion = invoker.nextInt();
-            switch (opcion) {
-                case 1://palas y picos
-                    do {
-                        System.out.println("""
-                                1. Pala de punta 1kg Kamasa S/44
-                                2. Pico Construcción 5 Mango 90cm Tramontina S/89
-                                3. Pala punta huevo con mango 2kg Tramontina S/61
-                                4. Lampa Punta Huevo con mango 1.2kg Tramontina S/27
-                                0. SALIR
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 44;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 89;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 61;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 27;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println();
-                                System.out.println("RETROCEDIENDO---------------------");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-
-                case 2://CARRETILLAS
-                    do {
-                        System.out.println("""
-                                1. Carretilla Buggy 5.5P3 80 litros llanta normal Werken S/119
-                                2. Carretilla CAT-50ND Truper S/238
-                                3. Carretilla Buggy para Niños Tolva Plastica 54x38cm Naranja Truper 10440 S/95
-                                4. Carretilla Buggy 100 Litros 6 Ft3 580 Kg Truper 11776 S/309
-                                0. Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 119;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 238;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 95;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 309;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("RETROCEDIENDO---------------------");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-                case 3://OTRAS HERRAMIENTAS DE CONSTRUCCION
-                    do {
-                        System.out.println("""
-                                 1. Balde de plástico Naranja Flexible 40 litros Rubi S/49
-                                 2. Tortol 3/8" x 14" Major S/4
-                                 3. Comba Octavada 1.5Kg Tramontina S/29
-                                 4. Cortador de 18 de cable y alambre Truper S/122
-                                 5. Barreta Corrugada 1"X1.50m Major S/42
-                                0. Salir
-                                """);
-                        System.out.println("elija una de las opciones");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 49;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 4;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 29;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 122;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                total = total + 42;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("RETROCEDIENDO---------------------");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-            }
-        }
-        while (opcion != 0);
-        System.out.println("RETROCEDIENDO==================");
-    }
-
-    public void ELECTRICIDAD() {
-        Scanner invoker = new Scanner(System.in);
-        int opcion;
-        int opcion1;
-        int opcionn;
-        double total = 0;
-        double igv, subtotal;
-        do {
-//ELECTRICIDD
-
-            System.out.println("TENEMOS ESTAS OPCIONES DE VENTA EN CATEGORIA DE ELECTRICIDAD");
-            System.out.println();
-            System.out.println("""
-                    1 EXTENSIONES DOMESTICAS
-                    2 EXTENSIONES INDUSTRIALES
-                    0 SALIR""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion = invoker.nextInt();
-            switch (opcion) {
-                case 1://EXTENSIONES DOMESTICAS
-                    do {
-                        System.out.println("""
-                                1. Extensión 4 tomas 2 puertos USB 2m Werken S/27
-                                2. Extensión cuadro 3 tomas 1 USB 1 Tipo C Negra Werken S/69
-                                3. Extensión 4 tomas Universal + Tierra 2 USB Bticino S/128
-                                4. Extensión Universal 5 tomas + L/T Bticino S/83
-                                5. Extensión eléctrica 3 toma corriente 50ft Kamasa S/33
-                                0. SALIR
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 27;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-
-                                break;
-                            case 2:
-                                total = total + 69;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 128;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 83;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                total = total + 33;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-
-                            case 0:
-                                System.out.println();
-                                System.out.println("RETROCEDIENDO---------------------");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-
-                case 2://EXTENSIONES INDUSTRIALES
-                    do {
-                        System.out.println("""
-                                 1. Extensión 1 toma tierra 3x12AWG 5m Werken S/79
-                                 2. Extensión 3 tomas tierra 3x18awg 5m Werken S/32
-                                 3. Extensión 3 tomas tierra 3x18awg 7m Werken S/42
-                                 4. Extensión 1 toma tierra 3x18awg 5m Werken S/29
-                                 5. Extensión Uso Rudo Naranja 8mts Calibre 2X16 FP0111 Fulgore S/23
-                                0. Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 79;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 32;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 42;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 29;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-
-                            case 5:
-                                total = total + 23;
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-
-                            case 0:
-                                System.out.println("RETROCEDIENDO---------------------");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-            }
-        }
-        while (opcion != 0);
-        System.out.println("RETROCEDIENDO==================");
-    }
-
-    public void OPCIONPISOYCERAMICOS() {
-        Scanner invoker = new Scanner(System.in);
-        int opcion;
-        int opcion1;
-        int opcionn;
-        double igv, subtotal;
-        double total = 0;
-        do {
-//Pisos vinílicos y pegamentos
-
-            System.out.println("TENEMOS ESTAS OPCIONES DE PISOS VINILICOS Y PEGAMENTOS ");
-            System.out.println();
-            System.out.println("""
-                    1 PISOS VINILICOS
-                    2 CUBREPISOS Y PISO BUSES
-                    3 PEGAMENTOS PARA PISOS VINILICOS
-                    0 SALIR""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion = invoker.nextInt();
-            switch (opcion) {
-                case 1://1 PISOS VINILICOS
-                    do {
-                        System.out.println("""
-                                1. Piso vinílico Teca 1mm - Venta por m2 Klipenn S/31
-                                2. Piso vinílico Pisopak French Oak Ii 1mm - Venta por m2 S/31
-                                3. Piso Vinílico Palisandro Wood 1.6mm - Venta por m2 Klipe S/27
-                                4. Piso Flex Familia Hickory 1mm - Venta por m2 Lg Floors S/32
-                                5. Piso Fresno Beige 1.5mm - Venta por m2 Pisopak S/41.10
-                                0. SALIR
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 31;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 31;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 27;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 4:
-                                total = total + 32;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 5:
-                                total = total + 41;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println();
-                                System.out.println("HASTA PRONTO");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-
-                case 2://CUBREPISOS Y PISO BUSES
-                    do {
-                        System.out.println("""
-                                1. Cubrepiso Vinoleum acanalado 2mm - Venta por m2 Pisopak S/34
-                                2. Cubrepiso pisobus Gris 2.16mm - Venta por m2 Pisopak S/34
-                                3. Piso vinílico Pisobus 3mm Marrón - Venta por m2 Pisopak S/32
-                                0. Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 34;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                total = total + 34;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 3:
-                                total = total + 32;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("SALIENDO........................................");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-
-                case 3://PEGAMENTOS PARA PISOS VINILICOS
-                    do {
-                        System.out.println("""
-                                1. Pegamento para rollos 1 galón Pisopak S/73
-                                2. Formipega 1 galón Pisopak S/102
-                                0. Salir
-                                """);
-                        System.out.println("elija una de las opciones");
-                        opcion1 = invoker.nextInt();
-                        switch (opcion1) {
-                            case 1:
-                                total = total + 73;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        System.out.println("gracias por comprar Pegamento para rollos 1 galón Pisopak");
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-
-                            case 2:
-                                total = total + 102;
-
-                                System.out.println("_______________________________________________________");
-                                igv = (total) * 0.18;
-                                subtotal = (total) - igv;
-                                total = subtotal + igv;
-                                System.out.println("SUBTOTAL " + subtotal);
-                                System.out.println("IGV " + igv);
-                                System.out.println("TOTAL A PAGAR " + total);
-                                System.out.println("_______________________________________________________");
-                                System.out.println("""
-                                        DESEA PAGAR LOS PRODUTOS SELECCIONADOS?
-                                        OPCION 1: SI
-                                        OPCION 2: NO""");
-                                System.out.println("elejir opcion");
-                                opcionn=invoker.nextInt();
-                                switch (opcionn){
-                                    case 1:
-                                        this.Fpago(total);
-                                        System.out.println("gracias por comprar Formipega 1 galón Pisopak ");
-                                        break;
-                                    case 2:
-                                        System.out.println("RETROCEDIENDO---------------------");
-                                        break;
-                                }
-                                break;
-                            case 0:
-                                System.out.println("saliendo............");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
-                        System.out.println();
-                    }
-                    while (opcion1 != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
-                    System.out.println();
-                    break;
-            }
-        }
-        while (opcion != 0);
-        System.out.println("RETROCEDIENDO==================");
-    }
-    public double Fpago(double total){
-        Scanner invoker = new Scanner(System.in);
-        double cantidadfaltante;
-        double vuelto;
-        double pagofinalFaltante;
-        double cambioFinal;
-        System.out.println("INGRESA EL PAGO");
-        int pago=invoker.nextInt();
-        if(pago==total){
-            System.out.println("*****************************************");
-            System.out.println("           G R A C I A S             ");
-            System.out.println("       POR COMPRAR EN PROMART!         ");
-            System.out.println("*****************************************");
-
-        }
-        else if(pago<total){
-            cantidadfaltante=total-pago;
-            System.out.println("FALTA "+cantidadfaltante);
-            System.out.println();
-            System.out.println("AGREGA LOS "+cantidadfaltante+" o DEVUELVE LOS PRODUCTOS");
-            pagofinalFaltante=invoker.nextInt();
-            if(pagofinalFaltante==cantidadfaltante){
-                System.out.println("*****************************************");
-                System.out.println("           G R A C I A S             ");
-                System.out.println("       POR COMPRAR EN PROMART!         ");
-                System.out.println("*****************************************");
-
-            }
-            else if(pagofinalFaltante>cantidadfaltante){
-                cambioFinal=pagofinalFaltante-cantidadfaltante;
-                System.out.println("su cambios es: "+cambioFinal+" GRACIAS POR COMPRAR EN PROMART");
-            }
-            else if(pagofinalFaltante<cantidadfaltante){
-                System.out.println("REGRESE LOS PRODUCTOS, LAS COSAS NO SON GRATIS");
-            }
-        }
-        else if(pago>total) {
-            vuelto=pago-total;
-            System.out.println("SU CAMBIO ES:"+vuelto);
-            System.out.println("*****************************************");
-            System.out.println("           G R A C I A S             ");
-            System.out.println("       POR COMPRAR EN PROMART!         ");
-            System.out.println("*****************************************");
-
-        }
-        System.exit(0);
-        return total;
-    }
     public void pago_y_vuelto(){
         total_a_pagar=igv+subtotal;
-        System.out.println("SUBTOTAL " + subtotal);
-        System.out.println("IGV " + igv);
-        System.out.println("TOTAL A PAGAR " + total_a_pagar);
+        System.out.println("cantidad "+cant_compra+"...........................................");
+        System.out.println("SUBTOTAL " + subtotal+".......................................");
+        System.out.println("IGV " + igv+"...............................");
+        System.out.println("TOTAL A PAGAR " + total_a_pagar+"................................");
         System.out.println("ingrese lo que va a pagar es soles por favor");
         cant_de_dinero=ncs.nextDouble();
-        if (cant_de_dinero<total_a_pagar&&cant_de_dinero>0){
-            vuelto=cant_de_dinero-total_a_pagar;
-            System.out.println("A UD le falta aumentar "+(-vuelto)+" soles");
+        if (cant_de_dinero<total_a_pagar&&cant_de_dinero>=0){
+            vuelto=total_a_pagar-cant_de_dinero;
+            System.out.println("A UD le falta aumentar "+(vuelto)+" soles");
             System.out.println("¿CUANTO VA A AUMENTAR?");
             aumentar= ncs.nextDouble();
             if(aumentar>vuelto&&aumentar!=0){
@@ -7463,7 +3737,7 @@ public class PROMART_JULIACA{
         else{
 
         }
-        System.out.println("¿Desea hacer mas compras?");
+        System.out.println("¿Va a hacer compras?");
         System.out.println("""
                         |1| SI
                         |2| NO
@@ -7483,6 +3757,997 @@ public class PROMART_JULIACA{
                 break;
         }
     }
+
+
+    //CODIGO DE ALEX
+    public void OPCIONDORMITORIOS() {
+        Scanner invoker = new Scanner(System.in);
+        int opcion;
+        int opcion1;
+        int opcionn;
+        double cantidad=0;
+        double igv, subtotal;
+        double total = 0;
+        double cantidadd;
+        do {
+
+
+            System.out.println("TENEMOS LOS SIGUIENTES COLCHONES");
+            System.out.println();
+            System.out.println("""
+                    (1). COLCHONES 1 PLAZA
+                    (2). COLCHONES 1.5 PLAZA
+                    (3). COLCHONES 2 PLAZAS
+                    (4). COLCHONES QUEEN
+                    (5). COLCHONES KING
+                    0 RETROCEDER""");
+            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
+            opcion = invoker.nextInt();
+            switch (opcion) {
+                case 1://1 PLAZA
+                    do {
+                        System.out.println("""
+                                (1). Colchón Eden Plus 1 plaza Paraiso S/269
+                                (2). Colchón Zebra 16 1.0x5 - 1 plaza Paraiso S/ 119
+                                (3). Colchón Zebra 18 1.0x8 - 1 plaza Paraiso S/ 229
+                                (0). RETROCEDER
+                                """);
+                        System.out.print("ELIJA UNA OPCION: ");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 269;
+                                System.out.println("Usted selecciono Colchón Eden Plus 1 plaza Paraiso S/269");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 119;
+                                System.out.println("Usted selecciono ");
+                                this.IgvPagos(total);
+                                break;
+
+                            case 3:
+                                total = total + 229;
+                                System.out.println("Usted selecciono ");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println();
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                System.out.println();
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println();
+                    break;
+
+
+                case 2://1.5 PLAZA
+                    do {
+                        System.out.println("""
+                                (1). colchón Consul black 1.5 plazas Paraiso S/249
+                                (2). Colchón Zebra 18 1.5x8 - 1.5 plazas Paraiso S/259
+                                (3). Colchón Kayseri 1.5 plazas El cisne S/1250
+                                (0). Salir
+                                """);
+                        System.out.println("elije una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 249;
+                                System.out.println("Usted selecciono colchón Consul black 1.5 plazas Paraiso S/249");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 259;
+                                System.out.println("Usted selecciono Colchón Zebra 18 1.5x8 - 1.5 plazas Paraiso S/259");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 1250;
+                                System.out.println("Usted selecciono Colchón Kayseri 1.5 plazas El cisne S/1250");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+                case 3://	COLCHONES 2 PLAZAS
+                    do {
+                        System.out.println("""
+                                (1). Colchón Super Star 2 plazas Paraiso S/529
+                                (2). Colchón Consul Black 2 plazas Paraiso S/309
+                                (3). Colchón Gravity 2 plazas Technodream S/1399
+                                (0). retroceder
+                                """);
+                        System.out.println("elija una de las opciones");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 529;
+                                System.out.println("Usted selecciono Colchón Super Star 2 plazas Paraiso S/529");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 309;
+                                System.out.println("Usted selecciono Colchón Consul Black 2 plazas Paraiso S/309");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 1399;
+                                System.out.println("Usted selecciono Colchón Gravity 2 plazas Technodream S/1399");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+                case 4:
+                    do {
+                        System.out.println("""
+                                (1).	Colchón Paraiso Lifestyles Pocket Queen S/619
+                                (2).	Colchón Dynamic Queen El cisne S/ 1509
+                                (3).    Colchón Pure Fresh Queen Drimer S/2679
+                                (0).    retroceder""");
+                        System.out.println("Selecciona una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 619;
+                                System.out.println("Usted selecciono Colchón Paraiso Lifestyles Pocket Queen S/619");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 1509;
+                                System.out.println("gracias por comprar Colchón Dynamic Queen El cisne S/1509");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 2679;
+                                System.out.println("gracias por comprar Colchón Pure Fresh Queen Drimer S/2679");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    } while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+
+                case 5:
+                    do {
+                        System.out.println("""
+                                (1). Colchón Super Star King Paraiso S/ 769
+                                (2). Colchón Ozono King Technodream S/2099
+                                (3). Colchón Element King El cisne S/2320
+                                (0). Salir""");
+                        System.out.println("selecciona una de las opciones");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 769;
+                                System.out.println("Usted selecciono Colchón Super Star King Paraiso S/769");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 2099;
+                                System.out.println("Usted selecciono Colchón Ozono King Technodream S/2099");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 2320;
+                                System.out.println("Usted selecciono Colchón Element King El cisne S/2320");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+
+
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+            }
+
+        }
+        while (opcion != 0);
+        System.out.println("Retrocediendo al menú anterior.......");
+    }
+
+    public void HERRAMIENTAS() {
+        Scanner invoker = new Scanner(System.in);
+        int opcion;
+        int opcion1;
+        int opcionn;
+        double igv, subtotal;
+        double total = 0;
+        double cantidad;
+        do {
+//HERRAMIENTAS
+            System.out.println("TENEMOS LAS SIGUIENTES HERRAMIENTAS");
+            System.out.println();
+            System.out.println("""
+                    (1). ESCALERAS DE ALUMINIO METAL Y  FIBRA
+                    (2). ESCALERAS DE MADERA
+                    (3). ESCALERAS TELESCOPICAS
+                    (0). RETROCEDER""");
+            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
+            opcion = invoker.nextInt();
+            switch (opcion) {
+                case 1://1 ESCALERAS DE ALUMINIO METAL Y  FIBRA
+                    do {
+                        System.out.println("""
+                                (1). Escalera Tijera de Acero 4 pasos Werken S/179
+                                (2). Escalera tijera aluminio 05 pasos S/306
+                                (3). Escalera tijera aluminio 4 pasos 120kg Botafogo S/299
+                                (4). Escalera tijera aluminio 5 pasos 120kg Botafogo S/329
+                                (5). Escalera metal de 3 pasos M&m S/139
+                                (0). retroceder
+                                """);
+                        System.out.print("ELIJA UNA OPCION: ");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 179;
+                                System.out.println("Usted selecciono Escalera Tijera de Acero 4 pasos Werken S/179 ");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 306;
+                                System.out.println("Usted selecciono Escalera tijera aluminio 05 pasos S/306");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 299;
+                                System.out.println("Usted selecciono Escalera tijera aluminio 4 pasos 120kg Botafogo S/299");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 329;
+                                System.out.println("Usted selecciono Escalera tijera aluminio 5 pasos 120kg Botafogo S/329");
+                                this.IgvPagos(total);
+                                break;
+                            case 5:
+                                total = total + 139;
+                                System.out.println("Usted selecciono Escalera metal de 3 pasos M&m ");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println();
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                System.out.println();
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+
+                case 2://ESCALERAS DE MADERA
+                    do {
+                        System.out.println("""
+                                (1). Escalera Tijera de madera 8 pasos Iforest S/129
+                                (2). Escalera Tijera de madera 10 pasos Iforest S/150
+                                (3). Escalera Steps Tijera de madera 6 pasos Iforest S/125
+                                (0). Retroceder
+                                """);
+                        System.out.println("elije una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 129;
+                                System.out.println("Usted selecciono Escalera Tijera de madera 8 pasos Iforest S/129");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 150;
+                                System.out.println("Usted selecciono Escalera Tijera de madera 10 pasos Iforest S/150");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 125;
+                                System.out.println("Usted selecciono Escalera Steps Tijera de madera 6 pasos Iforest S/125");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+                case 3://ESCALERAS TELESCOPICAS
+                    do {
+                        System.out.println("""
+                                (1). Escalera telescópica 24 pasos Now Laders S/1,643
+                                (2). Escalera Telescópica Aluminio 24 pasos Jumbor S/669
+                                (3). Escalera Telescopica 20 peldaños Soporta 175Kg Truper 16758 S/789
+                                (4). Escalera telescopica 28 peldaños soporta 150kg truper 16748 S/999
+                                (5). Escalera telescópica 20 peldaños, fibra de vidrio DIELECTRICO Truper S/1,199
+                                (0). Retroceder
+                                """);
+                        System.out.println("elija una de las opciones");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 1643;
+                                System.out.println("Usted seleccionó Escalera telescópica 24 pasos Now Laders S/1643");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 669;
+                                System.out.println("Usted seleccionó Escalera Telescópica Aluminio 24 pasos Jumbor S/669");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 789;
+                                System.out.println("Usted seleccionó Escalera Telescopica 20 peldaños Soporta 175Kg Truper S/789 S/789");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 999;
+                                System.out.println("Usted seleccionó Escalera telescopica 28 peldaños soporta 150kg truper S/999 ");
+                                this.IgvPagos(total);
+                                break;
+                            case 5:
+                                total = total + 1199;
+                                System.out.println("Usted seleccionó Escalera telescópica 20 peldaños, fibra de vidrio DIELECTRICO Truper S/1199");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+            }
+        }
+        while (opcion != 0);
+        System.out.println("Retrocediendo al menú anterior.......");
+    }
+
+    public void OPCIONCONSTRUCCION() {
+        Scanner invoker = new Scanner(System.in);
+        int opcion;
+        int opcion1;
+        int opcionn;
+        double igv, subtotal;
+        double total = 0;
+        do {
+//Construccion
+
+            System.out.println("TENEMOS ESTAS HERRAMIENTAS PARA CONSTRUCCION");
+            System.out.println();
+            System.out.println("""
+                    (1). PALAS Y PICOS
+                    (2). CARRETILLAS
+                    (3). OTRAS HERRAMIENTAS DE CONSTRUCCION
+                    (0). SALIR""");
+            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
+            opcion = invoker.nextInt();
+            switch (opcion) {
+                case 1://palas y picos
+                    do {
+                        System.out.println("""
+                                (1). Pala de punta 1kg Kamasa S/44
+                                (2). Pico Construcción 5 Mango 90cm Tramontina S/89
+                                (3). Pala punta huevo con mango 2kg Tramontina S/61
+                                (4). Lampa Punta Huevo con mango 1.2kg Tramontina S/27
+                                (0). Retroceder
+                                """);
+                        System.out.print("ELIJA UNA OPCION: ");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 44;
+                                System.out.println("Usted selecciono Pala de punta 1kg Kamasa S/44");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 89;
+                                System.out.println("Usted seleccionó Pico Construcción 5 Mango 90cm Tramontina S/89");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 61;
+                                System.out.println("Usted seleccionó Pala punta huevo con mango 2kg Tramontina S/61");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 27;
+                                System.out.println("Usted seleccionó Lampa Punta Huevo con mango 1.2kg Tramontina S/27");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println();
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                System.out.println();
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+
+                case 2://CARRETILLAS
+                    do {
+                        System.out.println("""
+                                (1). Carretilla Buggy 5.5P3 80 litros llanta normal Werken S/119
+                                (2). Carretilla CAT-50ND Truper S/238
+                                (3). Carretilla Buggy para Niños Tolva Plastica 54x38cm Naranja Truper 10440 S/95
+                                (4). Carretilla Buggy 100 Litros 6 Ft3 580 Kg Truper 11776 S/309
+                                (0). Salir
+                                """);
+                        System.out.println("elije una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 119;
+                                System.out.println("Usted seleccionó Carretilla Buggy 5.5P3 80 litros llanta normal Werken S/119");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 238;
+                                System.out.println("Usted seleccionó Carretilla CAT-50ND Truper S/238");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 95;
+                                System.out.println("Usted seleccionó Carretilla Buggy para Niños Tolva Plastica 54x38cm Naranja Truper 10440 S/95");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 309;
+                                System.out.println("Carretilla Buggy 100 Litros 6 Ft3 580 Kg Truper 11776 S/309");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+                case 3://OTRAS HERRAMIENTAS DE CONSTRUCCION
+                    do {
+                        System.out.println("""
+                                (1). Balde de plástico Naranja Flexible 40 litros Rubi S/49
+                                (2). Tortol 3/8" x 14" Major S/4
+                                (3). Comba Octavada 1.5Kg Tramontina S/29
+                                (4). Cortador de 18 de cable y alambre Truper S/122
+                                (5). Barreta Corrugada 1"X1.50m Major S/42
+                                (0). Retroceder
+                                """);
+                        System.out.println("elija una de las opciones");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 49;
+                                System.out.println("Usted seleccionó Balde de plástico Naranja Flexible 40 litros Rubi S/49");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 4;
+                                System.out.println("Usted seleccionó Tortol 3/8\" x 14\" Major S/4");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 29;
+                                System.out.println("Usted seleccionó Comba Octavada 1.5Kg Tramontina S/29");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 122;
+                                System.out.println("Usted seleccionó Cortador de 18 de cable y alambre Truper S/122");
+                                this.IgvPagos(total);
+                                break;
+                            case 5:
+                                total = total + 42;
+                                System.out.println("Usted selecciono Barreta Corrugada 1\"X1.50m Major S/42");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+            }
+        }
+        while (opcion != 0);
+        System.out.println("Retrocediendo al menú anterior.......");
+    }
+
+    public void ELECTRICIDAD() {
+        Scanner invoker = new Scanner(System.in);
+        int opcion;
+        int opcion1;
+        int opcionn;
+        double total = 0;
+        double igv, subtotal;
+        do {
+//ELECTRICIDD
+
+            System.out.println("TENEMOS ESTAS OPCIONES DE VENTA EN CATEGORIA DE ELECTRICIDAD");
+            System.out.println();
+            System.out.println("""
+                    (1). EXTENSIONES DOMESTICAS
+                    (2). EXTENSIONES INDUSTRIALES
+                    (0). RETROCEDER""");
+            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
+            opcion = invoker.nextInt();
+            switch (opcion) {
+                case 1://EXTENSIONES DOMESTICAS
+                    do {
+                        System.out.println("""
+                                (1). Extensión 4 tomas 2 puertos USB 2m Werken S/27
+                                (2). Extensión cuadro 3 tomas 1 USB 1 Tipo C Negra Werken S/69
+                                (3). Extensión 4 tomas Universal + Tierra 2 USB Bticino S/128
+                                (4). Extensión Universal 5 tomas + L/T Bticino S/83
+                                (5). Extensión eléctrica 3 toma corriente 50ft Kamasa S/33
+                                (0). RETROCEDER
+                                """);
+                        System.out.print("ELIJA UNA OPCION: ");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 27;
+                                System.out.println("Usted seleccionó Extensión 4 tomas 2 puertos USB 2m Werken S/27");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 69;
+                                System.out.println("Usted seleccionó Extensión cuadro 3 tomas 1 USB 1 Tipo C Negra Werken S/69");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 128;
+                                System.out.println("Usted seleccionó Extensión 4 tomas Universal + Tierra 2 USB Bticino S/128");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 83;
+                                System.out.println("Usted selecciono Extensión Universal 5 tomas + L/T Bticino S/83");
+                                this.IgvPagos(total);
+                                break;
+                            case 5:
+                                total = total + 33;
+                                System.out.println("Usted selecciono Extensión eléctrica 3 toma corriente 50ft Kamasa S/33");
+                                this.IgvPagos(total);
+                                break;
+
+                            case 0:
+                                System.out.println();
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                System.out.println();
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+
+                case 2://EXTENSIONES INDUSTRIALES
+                    do {
+                        System.out.println("""
+                                (1). Extensión 1 toma tierra 3x12AWG 5m Werken S/79
+                                (2). Extensión 3 tomas tierra 3x18awg 5m Werken S/32
+                                (3). Extensión 3 tomas tierra 3x18awg 7m Werken S/42
+                                (4). Extensión 1 toma tierra 3x18awg 5m Werken S/29
+                                (5). Extensión Uso Rudo Naranja 8mts Calibre 2X16 FP0111 Fulgore S/23
+                                (0). Salir
+                                """);
+                        System.out.println("elije una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 79;
+                                System.out.println("Usted seleccionó Extensión 1 toma tierra 3x12AWG 5m Werken S/79");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 32;
+                                System.out.println("Usted seleccionó Extensión 3 tomas tierra 3x18awg 5m Werken S/32");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 42;
+                                System.out.println("Usted seleccionó CExtensión 3 tomas tierra 3x18awg 7m Werken S/42");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 29;
+                                System.out.println("Usted seleccionó Extensión 1 toma tierra 3x18awg 5m Werken S/29");
+                                this.IgvPagos(total);
+                                break;
+
+                            case 5:
+                                total = total + 23;
+                                System.out.println("Usted seleccionó Extensión Uso Rudo Naranja 8mts Calibre 2X16 FP0111 Fulgore S/23");
+                                this.IgvPagos(total);
+                                break;
+
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+            }
+        }
+        while (opcion != 0);
+        System.out.println("Retrocediendo al menú anterior.......");
+    }
+
+    public void OPCIONPISOYCERAMICOS() {
+        Scanner invoker = new Scanner(System.in);
+        int opcion;
+        int opcion1;
+        int opcionn;
+        double igv, subtotal;
+        double total = 0;
+        do {
+//Pisos vinílicos y pegamentos
+
+            System.out.println("TENEMOS ESTAS OPCIONES DE PISOS VINILICOS Y PEGAMENTOS ");
+            System.out.println();
+            System.out.println("""
+                    (1). PISOS VINILICOS
+                    (2). CUBREPISOS Y PISO BUSES
+                    (3). PEGAMENTOS PARA PISOS VINILICOS
+                    (0). RETROCEDER""");
+            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
+            opcion = invoker.nextInt();
+            switch (opcion) {
+                case 1://1 PISOS VINILICOS
+                    do {
+                        System.out.println("""
+                                (1). Piso vinílico Teca 1mm - Venta por m2 Klipenn S/31
+                                (2). Piso vinílico Pisopak French Oak Ii 1mm - Venta por m2 S/31
+                                (3). Piso Vinílico Palisandro Wood 1.6mm - Venta por m2 Klipe S/27
+                                (4). Piso Flex Familia Hickory 1mm - Venta por m2 Lg Floors S/32
+                                (5). Piso Fresno Beige 1.5mm - Venta por m2 Pisopak S/41
+                                (0). RETROCEDER
+                                """);
+                        System.out.print("ELIJA UNA OPCION: ");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 31;
+                                System.out.println("Usted selecciono Piso vinílico Teca 1mm - Venta por m2 Klipenn  S/31");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 31;
+                                System.out.println("Usted seleccionó Piso vinílico Pisopak French Oak Ii 1mm - Venta por m2 S/31");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 27;
+                                System.out.println("Usted seleccionó Piso Vinílico Palisandro Wood 1.6mm - Venta por m2 Klipe S/27");
+                                this.IgvPagos(total);
+                                break;
+                            case 4:
+                                total = total + 32;
+                                System.out.println("Usted seleccionó Piso Flex Familia Hickory 1mm - Venta por m2 Lg Floors S/32");
+                                this.IgvPagos(total);
+                                break;
+                            case 5:
+                                total = total + 41;
+                                System.out.println("Usted seleccionó Piso Fresno Beige 1.5mm - Venta por m2 Pisopak S/41");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println();
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                System.out.println();
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+
+                case 2://CUBREPISOS Y PISO BUSES
+                    do {
+                        System.out.println("""
+                                (1). Cubrepiso Vinoleum acanalado 2mm - Venta por m2 Pisopak S/34
+                                (2). Cubrepiso pisobus Gris 2.16mm - Venta por m2 Pisopak S/34
+                                (3). Piso vinílico Pisobus 3mm Marrón - Venta por m2 Pisopak S/32
+                                (0). Retroceder
+                                """);
+                        System.out.println("elije una opcion");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 34;
+                                System.out.println("Usted seleccionó Cubrepiso Vinoleum acanalado 2mm - Venta por m2 Pisopak S/34");
+                                this.IgvPagos(total);
+                                break;
+                            case 2:
+                                total = total + 34;
+                                System.out.println("Usted seleccionó comprar Cubrepiso pisobus Gris 2.16mm - Venta por m2 Pisopak S/34");
+                                this.IgvPagos(total);
+                                break;
+                            case 3:
+                                total = total + 32;
+                                System.out.println("Usted seleccionó Piso vinílico Pisobus 3mm Marrón - Venta por m2 Pisopak S/32");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+
+                case 3://PEGAMENTOS PARA PISOS VINILICOS
+                    do {
+                        System.out.println("""
+                                (1). Pegamento para rollos 1 galón Pisopak S/73
+                                (2). Formipega 1 galón Pisopak S/102
+                                (0). Retroceder
+                                """);
+                        System.out.println("elija una de las opciones");
+                        opcion1 = invoker.nextInt();
+                        switch (opcion1) {
+                            case 1:
+                                total = total + 73;
+                                System.out.println("Usted seleccionó Pegamento para rollos 1 galón Pisopak S/73");
+                                this.IgvPagos(total);
+                                break;
+
+                            case 2:
+                                total = total + 102;
+                                System.out.println("Usted seleccionó Formipega 1 galón Pisopak S/102");
+                                this.IgvPagos(total);
+                                break;
+                            case 0:
+                                System.out.println("Retrocediendo al menú anterior.......");
+                                break;
+                            default:
+                                System.out.println("selecciona solo las opciones disponibles");
+                        }
+                        System.out.println("TOTAL ACTUAL DE COMPRA " + total);
+                        System.out.println();
+                    }
+                    while (opcion1 != 0);
+                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total);
+                    System.out.println();
+                    break;
+            }
+        }
+        while (opcion != 0);
+        System.out.println("Retrocediendo al menú anterior.......");
+    }
+    public double Fpago(double total){
+        Scanner invoker = new Scanner(System.in);
+        double cantidadfaltante;
+        double vuelto;
+        double pagofinalFaltante;
+        double cambioFinal;
+        System.out.println("INGRESA EL PAGO");
+        int pago=invoker.nextInt();
+        if(pago==total){
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S             ");
+            System.out.println("       POR COMPRAR EN PROMART!         ");
+            System.out.println("*****************************************");
+            this.BoletaDeVenta(total);
+
+        }
+        else if(pago<total){
+            cantidadfaltante=total-pago;
+            System.out.println("FALTA "+cantidadfaltante);
+            System.out.println();
+            System.out.println("AGREGA LOS "+cantidadfaltante+" o DEVUELVE LOS PRODUCTOS");
+            pagofinalFaltante=invoker.nextInt();
+            if(pagofinalFaltante==cantidadfaltante){
+                System.out.println("*****************************************");
+                System.out.println("           G R A C I A S             ");
+                System.out.println("       POR COMPRAR EN PROMART!         ");
+                System.out.println("*****************************************");
+                System.out.println();
+                this.BoletaDeVenta(total);
+            } else if (pagofinalFaltante<=0) {
+                System.out.println("PAGO INVALIDO, CERRANDO PROGRAMA");
+
+
+            } else if (pagofinalFaltante > cantidadfaltante) {
+                cambioFinal = pagofinalFaltante - cantidadfaltante;
+                System.out.println("su cambios es: " + cambioFinal + " GRACIAS POR COMPRAR EN PROMART");
+            } else if (pagofinalFaltante < cantidadfaltante) {
+                System.out.println("REGRESE LOS PRODUCTOS, LAS COSAS NO SON GRATIS");
+            }
+        }
+        else if(pago>total) {
+            vuelto=pago-total;
+            System.out.println("SU CAMBIO ES:"+vuelto);
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S             ");
+            System.out.println("       POR COMPRAR EN PROMART!         ");
+            System.out.println("*****************************************");
+            this.BoletaDeVenta(total);
+
+        }
+        System.exit(0);
+        return total;
+    }
+
+    public double IgvPagos(double total){
+        Scanner invoker=new Scanner(System.in);
+        double igv,subtotal;
+        int opcionn;
+        int opcionAgregar;
+
+        System.out.println("¿Cuantos productos va comprar? ");
+        double cantidad=invoker.nextInt();
+        if (cantidad<=0) {
+            System.out.println("CANTIDAD INVALIDA, REGRESANDO AL MENU PRINCIPAL");
+            this.secciondecategorias();
+        }
+        cantidadtotal=cantidadtotal+cantidad;
+        total=total*cantidad;
+        System.out.println("_______________________________________________________");
+        System.out.println("Total de Productos Seleccionados: "+cantidadtotal);
+        igv = (total) * 0.18;
+        subtotal = (total) - igv;
+        total = subtotal + igv;
+        System.out.println("_______________________________________________________");
+        System.out.println("              TOTAL A PAGAR " + total);
+        System.out.println("_______________________________________________________");
+        System.out.println();
+        System.out.println();
+        System.out.println("""
+                                        SELECCIONE UNA DE LAS OPCIONES:
+                                        OPCION (1): IR A PAGAR PRODUCTO QUE SELECCIONÓ
+                                        OPCION (2): IR A MENU PRINCIPAL, DESCARTANDO PRODUCTOS
+                                        OPCION (3): AGREGAR MAS PRODUCTOS""");
+        System.out.println("selecciona una de las opciones disponibles");
+        opcionn=invoker.nextInt();
+        switch (opcionn) {
+            case 1:
+                this.Fpago(total);
+                break;
+            case 2:
+                System.out.println("**********VOLVIENDO AL MENU PRINCIPAL**********");
+                this.secciondecategorias();
+                break;
+            case 3:
+                System.out.println("AHORA PUEDES AGREGAR MAS PRODUCTOS A TU COMPRA");
+                System.out.println();
+                break;
+            default:
+                System.out.println("opcion no valida");
+                this.secciondecategorias();
+        }
+        return total;
+    }
+
+    public Double BoletaDeVenta( double total){
+        Scanner invoker=new Scanner(System.in);
+        double cantidad,igv,subtotal;
+        int opcionn;
+        igv = (total) * 0.18;
+        subtotal = (total) - igv;
+        total = subtotal + igv;
+        System.out.println("---------------------BOLETA DE VENTA--------------------");
+        System.out.println("Total de Productos Seleccionados: "+cantidadtotal);
+        System.out.println("              SUBTOTAL " + subtotal);
+        System.out.println("              IGV " + igv);
+        System.out.println("              TOTAL A PAGAR " + total);
+        System.out.println("_______________________________________________________");
+        System.out.println();
+        return total;
+    }
+
+
     public void logo(){
         System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         \n" +
                 "         --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         \n" +
@@ -7536,3 +4801,4 @@ public class PROMART_JULIACA{
         XD.menuprincipal();
     }
 }
+
