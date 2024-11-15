@@ -1,16 +1,74 @@
-import javax.swing.*;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
-public class PROMART_JULIACA {
-    private double  subtotal,total,total_a_pagar=0,aumentar,vuelto,igv,cant_de_dinero=0;
-    private int cant_compra,opcion;
+public class PROMART_JULIACA_FINAL {
+    // arrylist de DUA
+    ArrayList<String> Limpieza1 = new ArrayList<>();
+    ArrayList<String> Limpieza2= new ArrayList<>();
+    ArrayList<String> Limpieza3 = new ArrayList<>();
+    ArrayList<String> Limpieza4 = new ArrayList<>();
+    ArrayList<String> Limpieza5 = new ArrayList<>();
+    double[] precio1 = {8};
+    double[] precio2 = {11};
+    double[] precio3 = {30};
+    double[] precio4 = {31};
+    double[] precio5 = {39.9};
+
+    ArrayList<Double> subtotal_limpieza = new ArrayList<>();
+    double igv, subtotal, totalpagar;
+    ArrayList<Integer> carrito_limpieza1 = new ArrayList<>();
+    ArrayList<Integer> carrito_limpieza2 = new ArrayList<>();
+    ArrayList<Integer> carrito_limpieza3 = new ArrayList<>();
+    ArrayList<Integer> carrito_limpieza4 = new ArrayList<>();
+    ArrayList<Integer> carrito_limpieza5 = new ArrayList<>();
+    int opcion, cantidad;
+    private double  total,total_a_pagar=0,aumentar,vuelto,cant_de_dinero=0;
+    private int cant_compra;
     private double pago,resto;
     private double precioPorProducto,cantidadtotal=0;
-    private int cantidadProductos;
+    private int cantidadProductos,i;
     private double cantidad_R, cantidadtotal_R=0;
     private double igv_R, subtotal_R, total_R = 0, vuelto_R;
     private int opcionn_R, opcion_Rr, opcion1_R;
     Scanner ncs = new Scanner(System.in);
+    ArrayList<Integer> carritoGENERAL=new ArrayList<>();
+    //OPCIONES DE REGRESO
+    String volver[]={"Regresar","Menu principal"};
+    ArrayList<Integer> carritoM=new ArrayList<>();
+    //JARDINERIA
+    String []JARDINERIA={
+            "Deco jardin","Macetas, Mceteros y Platos","Macetas","Maceteros","|1|- Porta maceta Natural 19cm Casa del Jardín Orange --------------------------|- S/ 15.96 -|",
+            "|2|- Maceta Redonda Estilo Piedra 15x15cm Con Plato - Color Aleatorio Reyplast -|- S/  9.90 -|","|1|- Maceta tejida con patas Casa del Jardín Orange ----------------------------|- S/ 15.96 -|",
+            "|2|- Macetero alto triangular mediano Orange -----------------------------------|- S/ 27.92 -|"};
+    double[] precioJardineria = {15.96, 9.90, 15.96, 27.92};
+    ArrayList<Integer> carritoJardineria = new ArrayList<>();
+    //OFICINA_Y_ESCOLAR
+    //precioOFICINA_Y_ESCOLAR
+    double []precioJadineria1= {15.96};
+    double []precioJadineria2={27.92};
+    double []precioJadineria3={18.00};
+    double []precioJadineria4={61.00};
+    double []precioJadineria5={38.90};
+    double []precioJadineria6={119.99};
+    double []precioJadineria7={87.00};
+    double []precioJadineria8={4,90};
+    double []precioJadineria9={1,70};
+    double []precioJadineria10={10.00};
+    double []precioJadineria11={12.40};
+    double []precioJadineria12={37.90};
+    ArrayList<Integer> carritoOFICINA_Y_ESCOLAR =new ArrayList<>();
+    //INFANTIL
+    double[] precioINFANTIL = {
+            299.00,169.00,
+            9.90,14.95,
+            159.90,269.00,
+            1499.0,49.0,
 
+    };
+    ArrayList<Integer> carritoINFANTIL = new ArrayList<>();
     public void menuprincipal() {
         this.logo();
         System.out.println("|----------------------------------------------------------------------------------------------------------------------------------|");
@@ -66,14 +124,18 @@ public class PROMART_JULIACA {
                 |21|- Mascotas-------------------------------------------------------------------------------|
                 | 0|- menu principal-------------------------------------------------------------------------|
                 |--------------------------------------------------------------------------------------------|
+                |50| boleta general
                 """);
         opcion = ncs.nextInt();
         switch (opcion) {
+            case 50:
+
+                break;
             case 1:
                 this.muebles();
                 break;
             case 2:
-                this.TerrazasYAireLibre();
+                this.Terrazas_y_aire_libre();
                 break;
             case 3:
                 this.organizacionYDecohogar();
@@ -141,6 +203,64 @@ public class PROMART_JULIACA {
     }
 
     // CODIGO DE GEMA
+    class Carrito {
+        private ArrayList<String> productos;
+        private ArrayList<Double> precios ;
+        private ArrayList<Integer> cantidades ;
+        private ArrayList<String> categorias;
+        private final double IGV = 0.18;
+
+        public Carrito() {
+            productos = new ArrayList<>();
+            precios = new ArrayList<>();
+            cantidades = new ArrayList<>();
+            categorias = new ArrayList<>();
+        }
+
+        public void agregarProducto(String producto, double precio, int cantidad, String categoria) {
+            productos.add(producto);
+            precios.add(precio);
+            cantidades.add(cantidad);
+            categorias.add(categoria);
+        }
+        public void eliminarProducto(int index) {
+            if (index >= 0 && index < productos.size()) {
+                productos.remove(index);
+                precios.remove(index);
+                cantidades.remove(index);
+                categorias.remove(index);
+                System.out.println("Producto eliminado del carrito.");
+            } else {
+                System.out.println("Índice no válido.");
+            }
+        }
+        public void mostrarCarrito() {
+            System.out.println("\n================ BOLETA DE COMPRA ================");
+            double total = 0;
+            for (int i = 0; i < productos.size(); i++) {
+                double precioTotal = precios.get(i) * cantidades.get(i);
+                double precioConIGV = precioTotal + (precioTotal * IGV);
+                total += precioConIGV;
+
+                System.out.printf("%-2d | %-40s | Cantidad: %-3d | Precio c/IGV: %.2f$\n",
+                        (i + 1), productos.get(i), cantidades.get(i), precioConIGV);
+                System.out.println("--------------------------------------------------");
+            }
+            System.out.printf("TOTAL (incl. IGV): %.2f$\n", total);
+            System.out.println("==================================================\n");
+        }
+        public double calcularTotal() {
+            double total = 0;
+            for (int i = 0; i < precios.size(); i++) {
+                double precioTotal = precios.get(i) * cantidades.get(i);
+                total += precioTotal + (precioTotal * IGV);
+            }
+            return total;
+        }
+    }
+
+    private Carrito carrito = new Carrito();
+
     public double total() {
         igv = total * 0.18;
         subtotal = total - igv;
@@ -221,7 +341,6 @@ public class PROMART_JULIACA {
         System.out.println("Cantidad de productos agregados: " + cantidadProductos);
         System.out.println("Total actualizado: " + total);
     }
-
     public void agradecimiento(){
         System.out.println("*****************************************");
         System.out.println("           G R A C I A S             ");
@@ -806,464 +925,148 @@ public class PROMART_JULIACA {
         }
     }
 
-    public void TerrazasYAireLibre(){
-        System.out.println("---TERRAZAS Y AIRE LIBRE---");
-        System.out.println("""
-                
-                |1|-  Especial Terraza-------------------------
-                |2|-  Terraza----------------------------------
-                |3|-  Jardineria-------------------------------
-                """);
-        int opcion1 = ncs.nextInt();
-        switch (opcion1){
-            case 1:
-                this.EspecialTerraza();
-                break;
-            case 2:
-                this.terrazas();
-                break;
-            case 3:
-                this.jardineria();
-                break;
-            default:
-                System.out.println("Opción no valida");
+    public void Terrazas_y_aire_libre() {
+        while (true) {
+            System.out.println("\n--- Menú de PROMART JULIACA ---");
+            System.out.println("1.- Ver Productos de Terraza");
+            System.out.println("2.- Ver Sombrillas");
+            System.out.println("3.- Ver Mesas de Exterior");
+            System.out.println("4.- Mostrar Carrito");
+            System.out.println("5.- Eliminar Producto del Carrito");
+            System.out.println("6.- Pagar");
+            System.out.println("7.- Imprimir boleta");
+            System.out.println("8.- Salir");
+
+            int opcion = ncs.nextInt();
+            switch (opcion) {
+                case 1:
+                    this.seleccionarProductoDeCategoria("Terrazas");
+                    break;
+                case 2:
+                    this.seleccionarProductoDeCategoria("Sombrillas");
+                    break;
+                case 3:
+                    this.seleccionarProductoDeCategoria("Mesas Exterior");
+                    break;
+                case 4:
+                    this.carrito.mostrarCarrito();
+                    break;
+                case 5:
+                    this.eliminarProductoDelCarrito();
+                    break;
+                case 6:
+                    this.realizarPago();
+                    break;
+                case 7:
+
+                    break;
+                case 8:
+                    this.agradecimiento();
+                    return;
+                default:
+                    System.out.println("Opción no válida.");
+            }
         }
     }
-    public void EspecialTerraza(){
-        System.out.println("--ESPECIAL TERRAZA");
-        System.out.println("1.- Terrazas del balcón");
-        System.out.println("2.- Terrazas de sala");
-        System.out.println("3.- Comedores");
-        int terrazasB= ncs.nextInt();
-        switch(terrazasB){
-            case 1:
-                this.TerrazasBalcon();
-                break;
-            case 2:
-                this.terrazasSala();
-                break;
-            case 3:
-                this.comedores();
-                break;
+    public void realizarPago() {
+        carrito.mostrarCarrito();
+        double total = carrito.calcularTotal();
+        System.out.printf("El total a pagar es: %.2f$\n", total);
+        System.out.println("¿Está listo para realizar el pago? (sí = 1 / no = 0)");
+        int confirmacion = ncs.nextInt();
+        if (confirmacion == 1) {
+            System.out.println("Ingrese el monto con el que pagará:");
+            double pago = ncs.nextDouble();
+            if (pago >= total) {
+                double cambio = pago - total;
+                System.out.printf("Pago exitoso. Su cambio es: %.2f$\n", cambio);
+                this.agradecimiento();
+                carrito = new Carrito();
+            } else {
+                System.out.println("Monto insuficiente. Por favor, intente nuevamente.");
+            }
+        } else {
+            System.out.println("Operación cancelada. Puede seguir agregando productos.");
         }
     }
-    public void TerrazasBalcon(){
-        System.out.println("--TERRAZAS DE BALCÓN--");
-        System.out.println("1.-Juego De Terrazas Bistro Plus Mesa + 2 Sillas Marrón 199$");
-        System.out.println("2.-Set De Terraza Orange Palma: 2 Butacas + Mesa 699$");
-        int terrazasB=ncs.nextInt();
-        switch (terrazasB){
-            case 1:
-                System.out.println("Juego De Terrazas Bistro Plus Mesa + 2 Sillas Marrón 199$");
-                precioPorProducto=199;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Set De Terraza Orange Palma: 2 Butacas + Mesa 699$");
-                precioPorProducto=699;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
+    public void seleccionarProductoDeCategoria(String categoria) {
+        ArrayList<String> productos = obtenerProductosPorCategoria(categoria);
+        ArrayList<Double> precios = obtenerPreciosPorCategoria(categoria);
+
+        if (productos.isEmpty()) {
+            System.out.println("Categoría no encontrada.");
+            return;
+        }
+        System.out.println("\n-- Selección de Productos en " + categoria + " --");
+        for (int i = 0; i < productos.size(); i++) {
+            System.out.println((i + 1) + ". " + productos.get(i) + " - Precio: " + precios.get(i) + "$");
+        }
+        System.out.println("Seleccione el número del producto que desea agregar al carrito (0 para regresar):");
+        int seleccion = ncs.nextInt();
+
+        if (seleccion > 0 && seleccion <= productos.size()) {
+            System.out.println("Ingrese la cantidad que desea agregar:");
+            int cantidad = ncs.nextInt();
+            carrito.agregarProducto(productos.get(seleccion - 1), precios.get(seleccion - 1), cantidad, categoria);
+            System.out.println("Producto añadido al carrito: " + productos.get(seleccion - 1));
+            carrito.mostrarCarrito();
+        } else if (seleccion == 0) {
+            System.out.println("Regresando al menú principal.");
+        } else {
+            System.out.println("Selección no válida.");
         }
     }
-    public void terrazasSala(){
-        System.out.println("--TERRAZAS DE SALA--");
-        System.out.print("1.-Sofá De Terraza Terranova 224cm Orange 1499 $");
-        System.out.println("2.-Set Terraza Bailbao 1 Sofá + 2 Butacas + Mesa Orange 1699 $");
-        int terrazasS=ncs.nextInt();
-        switch (terrazasS){
-            case 1:
-                System.out.println("Sofá De Terraza Terranova 224cm Orange 1499 $");
-                precioPorProducto=1499;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Set Terraza Bailbao 1 Sofá + 2 Butacas + Mesa Orange 1699 $");
-                precioPorProducto=1699;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
+    public void eliminarProductoDelCarrito() {
+        carrito.mostrarCarrito();
+        System.out.println("Seleccione el número del producto que desea eliminar del carrito (0 para cancelar):");
+        int indice = ncs.nextInt();
+        if (indice > 0 && indice <= carrito.productos.size()) {
+            carrito.eliminarProducto(indice - 1);
+            carrito.mostrarCarrito();
+        } else if (indice == 0) {
+            System.out.println("Operación cancelada.");
+        } else {
+            System.out.println("Selección no válida.");
         }
     }
-    public void comedores(){
-        System.out.println("--Comedores--");
-        System.out.print("1.-Set Mesa Jamaica Mix + 4 Sillas Polinplast 399$");
-        System.out.println("2.-Set De Terraza Delano 5 Piezas Keter 2999$");
-        int comedores=ncs.nextInt();
-        switch( comedores){
-            case 1:
-                System.out.println("Set Mesa Jamaica Mix + 4 Sillas Polinplast 399$");
-                precioPorProducto=399;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
+    ArrayList<String> obtenerProductosPorCategoria(String categoria) {
+        ArrayList<String> productos = new ArrayList<>();
+
+        switch (categoria) {
+            case "Terrazas":
+                productos.add("Juego De Terrazas Bistro Plus Mesa + 2 Sillas Marrón");
+                productos.add("Set De Terraza Orange Palma: 2 Butacas + Mesa");
                 break;
-            case 2:
-                System.out.println("Set De Terraza Delano 5 Piezas Keter 2999$");
-                precioPorProducto=2999;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
+            case "Sombrillas":
+                productos.add("Quitasol terraza lateral Aluminio rectangular 290x390cm Taupe Naterial");
+                productos.add("Sombrilla de playa Airvent Uv Fp50 + gris Orange");
                 break;
-            default:
-                System.out.println("Opcion no valida");
+            case "Mesas Exterior":
+                productos.add("Mesa catering plegable 150cm Orange");
+                productos.add("Mesa de terraza Noa Vidrio + Ratan 80x80x66 Naterial");
+                break;
         }
+        return productos;
     }
-    public void terrazas(){
-        System.out.println("--TERRAZAS--");
-        System.out.println("""             
-                |1|-  Juego de terrazas-------------------------
-                |2|-  Sombrillas----------------------
-                |3|-  Mesas de exterior---------------------
-                """);
-        int terraza=ncs.nextInt();
-        switch(terraza){
-            case 1:
-                this.juego_de_terrazas();
+    ArrayList<Double> obtenerPreciosPorCategoria(String categoria) {
+        ArrayList<Double> precios = new ArrayList<>();
+        switch (categoria) {
+            case "Terrazas":
+                precios.add(199.0);
+                precios.add(699.0);
                 break;
-            case 2:
-                this.sombrillas();
+            case "Sombrillas":
+                precios.add(899.0);
+                precios.add(79.9);
                 break;
-            case 3:
-                this.mesas_exterior();
+            case "Mesas Exterior":
+                precios.add(179.0);
+                precios.add(399.0);
                 break;
-            default:
-                System.out.println("Opcion no valida");
         }
-    }
-    public void juego_de_terrazas(){
-        System.out.println("--JUEGO DE TERRAZAS--");
-        System.out.println("1.-Juego de terraza Bistro Mesa + 2 sillas Marrón 199$");
-        System.out.println("2.-Sofá de terrazas Terranova 224cm Orange 1499$");
-        int juegoterraza= ncs.nextInt();
-        switch(juegoterraza){
-            case 1:
-                System.out.println();
-                System.out.println("Ha seleccionado: Juego de terraza Bistro Mesa + 2 sillas Marrón 199$");
-                precioPorProducto =199;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Sofá de terrazas Terranova 224cm Orange 1499$");
-                precioPorProducto=1499;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-        }
-    }
-    public void sombrillas(){
-        System.out.println("--SOMBRILLAS--");
-        System.out.println("1.-Quitasol terraza lateral Aluminio rectangular 290x390cm Taupe Naterial 899$");
-        System.out.println("2.-Sombrilla de playa Airvent Uv Fp50 + gris Orange 79.90$");
-        int sombrilla = ncs.nextInt();
-        switch(sombrilla){
-            case 1:
-                System.out.println("Quitasol terraza lateral Aluminio rectangular 290x390cm Taupe Naterial 899$");
-                precioPorProducto=899;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Sombrilla de playa Airvent Uv Fp50 + gris Orange 79$");
-                precioPorProducto=79;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-        }
-    }
-    public void mesas_exterior(){
-        System.out.println("--MESAS DE EXTERIOR--");
-        System.out.println("1.Mesa catering plegable 150cm Orange 179$");
-        System.out.println("2.-Mesa de terraza Noa Vidrio +Ratan 80x80x66 Naterial 399$");
-        int mesasExterior= ncs.nextInt();
-        switch(mesasExterior){
-            case 1:
-                System.out.println("Mesa catering plegable 150cm Orange 179$");
-                precioPorProducto=170;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Mesa de terraza Noa Vidrio +Ratan 80x80x66 Naterial 399$");
-                precioPorProducto=399;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-        }
-    }
-    public void jardineria(){
-        System.out.println("---JARDINERIA---");
-        System.out.println("""               
-                |1|-  Deco Jardin --------------------------------
-                |2|-  Herramienta para jardin---------------------
-                """);
-        int jardineria=ncs.nextInt();
-        switch (jardineria){
-            case 1:
-                this.decojardin();
-                break;
-            case 2:
-                this.herramientajardin();
-                break;
-            default:
-                System.out.println("opción no valida");
-        }
-    }
-    public void decojardin(){
-        System.out.println("--DECO JARDIN--");
-        System.out.println("""
-                
-                |1|-  Floreros-------------------------------
-                |2|-  Plantas Naturales-----------------------
-                |3|-  Adornos de Jardín-----------------------
-                """);
-        int decojardin=ncs.nextInt();
-        switch(decojardin){
-            case 1:
-                this.Floreros();
-                break;
-            case 2:
-                this.PlantasNaturales();
-                break;
-            case 3:
-                this.Adornos_de_Jardín();
-                break;
-            default:
-                System.out.println("Opción no valida");
-        }
-    }
-    public void Floreros (){
-        System.out.println("--FLOREROS--");
-        System.out.println("1.-Florero Doble Vidrio Casa De Jardín Orange (39.90) $");
-        System.out.println("2.-Florero Vidrio Ambar 8x9x17cm Del Jardín Orange (29.90)$");
-        int floreros=ncs.nextInt();
-        switch (floreros){
-            case 1:
-                System.out.println("Ha seleccionado: Florero Doble Vidrio Casa De Jardín Orange (39.90)$");
-                precioPorProducto=39.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Ha seleccionado: Florero Vidrio Ambar 8x9x17cm Del Jardín Orange (29.90)$");
-                precioPorProducto=29.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("opción no valida");
-        }
-    }
-    public void PlantasNaturales(){
-        System.out.println("--PLANTAS NATURALES--");
-        System.out.println("""
-                
-                |1|-  Plantas de sol-----------------------
-                |2|-  Palmeras-----------------------------
-                """);
-        int plantas=ncs.nextInt();
-        switch(plantas){
-            case 1:
-                this.plantasSol();
-                break;
-            case 2:
-                this.palmera();
-                break;
-            default:
-                System.out.println("Opción no valida");
-        }
-    }
-    public void plantasSol(){
-        System.out.println("--PLANTAS DE SOL--");
-        System.out.println("1.-Planta natural clorofito Mp 4Estaciones 4.90$");
-        System.out.println("2.-Planta natural Marigold 4Estaciones 4.90$");
-        int sol=ncs.nextInt();
-        switch(sol){
-            case 1:
-                System.out.println("Ha seleccionado: Planta natural clorofito Mp 4Estaciones 4.90$");
-                precioPorProducto=4.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Ha seleccionado: Planta natural Marigold 4Estaciones 4.90$");
-                precioPorProducto=4.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-        }
-    }
-    public void palmera(){
-        System.out.println("--PALMERAS---");
-        System.out.println("1.-Palmera Cataractarum 4Estaciones 69.90$");
-        System.out.println("2.-Planta palmera robellini 4Estaciones 199$");
-        int palmeras=ncs.nextInt();
-        switch(palmeras) {
-            case 1:
-                System.out.println("Palmera Cataractarum 4Estaciones 69.90$");
-                precioPorProducto=69.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Planta palmera robellini 4Estaciones 199$");
-                precioPorProducto=199;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-        }
+        return precios;
     }
 
-    public void Adornos_de_Jardín(){
-        System.out.println("------ADORNOS DE JARDIN-------");
-        System.out.println("""
-        |1|- Adorno conejos 16.5cm orange (39)$-------------------------
-        |2|- Adorno cachorro Welcome 26cm Orange (39)$-------------------
-        """);
-        int adornosJardin= ncs.nextInt();
-        switch(adornosJardin){
-            case 1:
-                System.out.println("Ha seleccionado: Adorno conejos 16.5cm orange (39) $");
-                precioPorProducto=39;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Ha seleccionado:Adorno cachorro Welcome 26cm Orange (39)$");
-                precioPorProducto=39;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-
-        }
-    }
-    public void herramientajardin(){
-        System.out.println("---HERRAMIENTAS PARA JARDIN---");
-        System.out.println("1.-De mango largo");
-        System.out.println("2.-Tijeras y guantes");
-        System.out.println("3.-Grass Sintetico");
-        int herramientas=ncs.nextInt();
-        switch(herramientas){
-            case 1:
-                this.mangolargo();
-                break;
-            case 2:
-                this.TijerasGuantes();
-                break;
-            case 3:
-                this.GrassSintetico();
-                break;
-            default:
-                System.out.println("Opción no valida");
-        }
-    }
-    public void mangolargo(){
-        System.out.println("--DE MANGO LARGO--");
-        System.out.println("1.-Rastrillo-graduable Combisystem Gardena 144$");
-        System.out.println("2.-Cortacesped manual Helicoidal 400 classic Gardena  1291$");
-        switch(opcion){
-            case 1:
-                System.out.println("Rastrillo-graduable Combisystem Gardena 144$");
-                precioPorProducto=144;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Cortacesped manual Helicoidal 400 classic Gardena  1291$");
-                precioPorProducto=1291;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opción no valida");
-        }
-    }
-    public void TijerasGuantes(){
-        System.out.println("--TIJERA Y GUANTES--");
-        System.out.println("1.-Tijera con Mangos Tibulares 68cm Truper 40.90$");
-        System.out.println("2.-Guantes para jardinería Nitrilo Celeste 11.90$");
-        int tijerasyguantes=ncs.nextInt();
-        switch(tijerasyguantes){
-            case 1:
-                System.out.println("Tijera con Mangos Tibulares 68cm Truper 40.90$");
-                precioPorProducto = 40.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Guantes para jardinería Nitrilo Celeste 11.90$");
-                precioPorProducto=11.90;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opción no valida");
-        }
-    }
-    public void GrassSintetico(){
-        System.out.println("GRASS SINTÉTICO---");
-        System.out.println("1.-Grass sintético 1x4m 5mm Orange 89$");
-        System.out.println("2.-Grass sintético 1x4m 25mm Orange 199$");
-        int grass=ncs.nextInt();
-        switch(grass){
-            case 1:
-                System.out.println("Grass sintético 1x4m 5mm Orange 89$");
-                precioPorProducto=89;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            case 2:
-                System.out.println("Grass sintético 1x4m 25mm Orange 199$");
-                precioPorProducto=199;
-                this.agregarProductos();
-                this.total();
-                this.vuelto();
-                break;
-            default:
-                System.out.println("Opcion no valida");
-        }
-    }
 
     public void organizacionYDecohogar() {
         System.out.println("-----ORGANIZACIÓN Y DECOHOGAR-----");
@@ -2052,12 +1855,11 @@ public class PROMART_JULIACA {
         System.out.println("|--------------------------------------------------------------------------------------------|");
         System.out.println("----------JARDINERIA----------");
         System.out.println("""
-                |--------------------------------------------------------------------------------------------|
-                |1|- Deco jardin-----------------------------------------------------------------------------|
-                |2|- Regresar--------------------------------------------------------------------------------|
-                |0|- Menu Principal--------------------------------------------------------------------------|
-                |--------------------------------------------------------------------------------------------|
-                """);
+                |--------------------------------------------------------------------------------------------|""");
+        System.out.println("1.- "+JARDINERIA[0]);
+        System.out.println("2.- "+volver[0]);
+        System.out.println("0.- "+volver[1]);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
         opcion = ncs.nextInt();
         switch (opcion) {
             case 1:
@@ -2079,11 +1881,10 @@ public class PROMART_JULIACA {
         System.out.println("|--------------------------------------------------------------------------------------------|");
         System.out.println("-----DECO JARDIN-----");
         System.out.println("""
-                |--------------------------------------------------------------------------------------------|
-                |1|- macetas, maceteros y platos-------------------------------------------------------------|
-                |0|- regresar--------------------------------------------------------------------------------|
-                |--------------------------------------------------------------------------------------------|
-                """);
+                |--------------------------------------------------------------------------------------------|""");
+        System.out.println("1.-"+JARDINERIA[1]);
+        System.out.println("0.-"+volver[0]);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
         opcion = ncs.nextInt();
         switch (opcion) {
             case 1:
@@ -2101,12 +1902,12 @@ public class PROMART_JULIACA {
         System.out.println("|--------------------------------------------------------------------------------------------|");
         System.out.println("JARDINERIA/Deco Jardin/Macetas, maceteros y platos");
         System.out.println("""
-                |--------------------------------------------------------------------------------------------|
-                |1|- Macetas---------------------------------------------------------------------------------|
-                |2|- Maceteros-------------------------------------------------------------------------------|
-                |0|- Regresar--------------------------------------------------------------------------------|
-                |--------------------------------------------------------------------------------------------|
-                """);
+                |--------------------------------------------------------------------------------------------|""");
+        for(i=2;i<4;i++){
+            System.out.println((i-1)+".- "+JARDINERIA[i]);
+        }
+        System.out.println("0.- "+volver[0]);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
         opcion = ncs.nextInt();
         switch (opcion) {
             case 1:
@@ -2125,11 +1926,12 @@ public class PROMART_JULIACA {
         System.out.println("""
                 JARDINERIA / Deco Jardin / Macetas, maceteros y platos / Macetas
                 |--------------------------------------------------------------------------------------------|
-                |------------------------- Nombre del Producto ---------------------------------|- Precio ---|
-                |1|- Porta maceta Natural 19cm Casa del Jardín Orange --------------------------|- S/ 15.96 -|
-                |2|- Maceta Redonda Estilo Piedra 15x15cm Con Plato - Color Aleatorio Reyplast -|- S/  9.90 -|
-                |0|- regresar
-                """);
+                |------------------------- Nombre del Producto ---------------------------------|- Precio ---|""");
+        for(i=4;i<6;i++){
+            System.out.println(JARDINERIA[i]);
+        }
+        System.out.println("0.- "+volver[0]);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
         opcion = ncs.nextInt();
         switch (opcion) {
             case 1:
@@ -2144,13 +1946,14 @@ public class PROMART_JULIACA {
 
     public void Maceteros() {
         System.out.println("""
-                JARDINERIA / Deco Jardin / Macetas, maceteros y platos / Maceteros
+                JARDINERIA / Deco Jardin / Macetas, maceteros y platos / Macetas
                 |--------------------------------------------------------------------------------------------|
-                |------------------------- Nombre del Producto ---------------------------------|- Precio ---|
-                |1|- Maceta tejida con patas Casa del Jardín Orange ----------------------------|- S/ 15.96 -|
-                |2|- Macetero alto triangular mediano Orange -----------------------------------|- S/ 27.92 -|
-                |0|- regresar
-                """);
+                |------------------------- Nombre del Producto ---------------------------------|- Precio ---|""");
+        for(i=6;i<8;i++){
+            System.out.println(JARDINERIA[i]);
+        }
+        System.out.println("0.- "+volver[0]);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
         opcion = ncs.nextInt();
         switch (opcion) {
             case 1:
@@ -2169,12 +1972,12 @@ public class PROMART_JULIACA {
             this.Macetas();
             this.cantidad_De_productos();
             if (opcion == 1) {
-                igv = (cant_compra * 15.96) * 0.18;
-                subtotal = (cant_compra * 15.96) - igv;
+                igv = (cant_compra *precioJardineria[0]) * 0.18;
+                subtotal = (cant_compra * precioJardineria[0]) - igv;
                 this.pago_y_vuelto();
             } else if (opcion == 2) {
-                igv = (cant_compra * 9.9) * 0.18;
-                subtotal = (cant_compra * 9.9) - igv;
+                igv = (cant_compra * precioJardineria[1]) * 0.18;
+                subtotal = (cant_compra * precioJardineria[1]) - igv;
                 this.pago_y_vuelto();
             } else {
 
@@ -2183,12 +1986,12 @@ public class PROMART_JULIACA {
             this.Maceteros();
             this.cantidad_De_productos();
             if (opcion == 1) {
-                igv = (cant_compra * 15.96) * 0.18;
-                subtotal = (cant_compra * 15.96) - igv;
+                igv = (cant_compra * precioJardineria[2]) * 0.18;
+                subtotal = (cant_compra * precioJardineria[2]) - igv;
                 this.pago_y_vuelto();
             } else if (opcion == 2) {
-                igv = (cant_compra * 27.92) * 0.18;
-                subtotal = (cant_compra * 27.92) - igv;
+                igv = (cant_compra * precioJardineria[3]) * 0.18;
+                subtotal = (cant_compra * precioJardineria[3]) - igv;
                 this.pago_y_vuelto();
             } else {
 
@@ -2652,7 +2455,7 @@ public class PROMART_JULIACA {
     }
 
     public double forma_de_pago_INFANTILES() {
-        double total, total_a_pagar = 0;
+        double  total_a_pagar = 0;
         if (opcion == 1) {
             this.Monitores_para_bebés();
             this.cantidad_De_productos();
@@ -4106,219 +3909,271 @@ public class PROMART_JULIACA {
                 System.out.println("opcion no valida");
         }
     }
+    //ARRAYSLIST DDE ALLEX B.
 
-    public void limpieza() {
-        System.out.println("TENEMOS LO SIGUIENTE:");
-        System.out.println();
-        System.out.println("""
-                |-------------------------------|
-                |1| Limpieza de baños
-                |2| Limpieza de cocinas
-                |3| Limpieza de sala y comedor
-                |4| Limpieza de pisos
-                |5| Limpieza de piscinas
-                |0| salir al menu principal
-                |-------------------------------|
-                """);
-        opcion = ncs.nextInt();
-        switch (opcion) {
-            case 1:
-                System.out.println("TENEMOS:");
-                System.out.println();
-                System.out.println("""
-                        |----------------------------------------------------|
-                         |1| Limpiador Cif Anti Hongos Doypack 450ml S/8
-                         |0| salir al menu principal
-                        |----------------------------------------------------|
-                        """);
-                opcion = ncs.nextInt();
-                if (opcion == 1) {
-                    System.out.println("Cuantas va a querer");
-                    cant_compra = ncs.nextInt();
-                    if (cant_compra > 0 && cant_compra <= 100) {
-                        igv = (cant_compra * 8) * 0.18;
-                        subtotal = (cant_compra * 8) - igv;
-                        this.pago_y_vuelto();
-                    } else if (cant_compra > 100) {
-                        System.out.println("---- NO TENEMOS STOCK ----");
-                        System.out.println();
-                        this.menuprincipal();
-                    } else {
-                        System.out.println("|----CANCELAMOS SU COMPRA----|");
-                        System.out.println();
-                        this.menuprincipal();
-                    }
-                } else if (opcion == 0) {
-                    System.out.println("----RETROCEDIENDO----");
-                    this.menuprincipal();
-                } else {
-                    System.out.println("""
-                                  |---OPCION NO VALIDA---|
-                            |---REGRESANDO AL MENU PRINCIPAL---|
-                            """);
-                    System.out.println();
-                    this.menuprincipal();
-                }
-                break;
-            case 2:
-                System.out.println("TENEMOS:");
-                System.out.println();
-                System.out.println("""
-                        |--------------------------------------------------------|
-                         |1| Paño de microfibra 40x40cm 6 unidades Orange S/11
-                         |0| salir al menu principal
-                        |--------------------------------------------------------|
-                        """);
-                opcion = ncs.nextInt();
-                if (opcion == 1) {
-                    System.out.println("Cuantas va a querer");
-                    cant_compra = ncs.nextInt();
-                    if (cant_compra > 0 && cant_compra <= 100) {
-                        igv = (cant_compra * 11) * 0.18;
-                        subtotal = (cant_compra * 11) - igv;
-                        this.pago_y_vuelto();
-                    } else if (cant_compra > 100) {
-                        System.out.println("---- NO TENEMOS STOCK ----");
-                        System.out.println();
-                        this.menuprincipal();
-                    } else {
-                        System.out.println("|----CANCELAMOS SU COMPRA----|");
-                        System.out.println();
-                        this.menuprincipal();
-                    }
-                } else if (opcion == 0) {
-                    System.out.println("----RETROCEDIENDO----");
-                    this.menuprincipal();
-                } else {
-                    System.out.println("""
-                                  |---OPCION NO VALIDA---|
-                            |---REGRESANDO AL MENU PRINCIPAL---|
-                            """);
-                    System.out.println();
-                    this.menuprincipal();
-                }
-                break;
-            case 3:
-                System.out.println("TENEMOS:");
-                System.out.println();
-                System.out.println("""
-                        |----------------------------------------------------|
-                         |1| Limpiavidrios Sapolio 5lt S/30
-                         |0| salir al menu principal
-                        |----------------------------------------------------|
-                        """);
-                opcion = ncs.nextInt();
-                if (opcion == 1) {
-                    System.out.println("Cuantas va a querer");
-                    cant_compra = ncs.nextInt();
-                    if (cant_compra > 0 && cant_compra <= 100) {
-                        igv = (cant_compra * 30) * 0.18;
-                        subtotal = (cant_compra * 30) - igv;
-                        this.pago_y_vuelto();
-                    } else if (cant_compra > 100) {
-                        System.out.println("---- NO TENEMOS STOCK ----");
-                        System.out.println();
-                        this.menuprincipal();
-                    } else {
-                        System.out.println("|----CANCELAMOS SU COMPRA----|");
-                        System.out.println();
-                        this.menuprincipal();
-                    }
-                } else if (opcion == 0) {
-                    System.out.println("----RETROCEDIENDO----");
-                    this.menuprincipal();
-                } else {
-                    System.out.println("""
-                                  |---OPCION NO VALIDA---|
-                            |---REGRESANDO AL MENU PRINCIPAL---|
-                            """);
-                    System.out.println();
-                    this.menuprincipal();
-                }
-                break;
-            case 4:
-                System.out.println("TENEMOS:");
-                System.out.println();
-                System.out.println("""
-                        |--------------------------------------------------------|
-                         |1| Limpiador piso madera y laminado 700ml Binner S/31
-                         |0| salir al menu principal
-                        |--------------------------------------------------------|
-                        """);
-                opcion = ncs.nextInt();
-                if (opcion == 1) {
-                    System.out.println("Cuantas va a querer");
-                    cant_compra = ncs.nextInt();
-                    if (cant_compra > 0 && cant_compra <= 100) {
-                        igv = (cant_compra * 31) * 0.18;
-                        subtotal = (cant_compra * 31) - igv;
-                        this.pago_y_vuelto();
-                    } else if (cant_compra > 100) {
-                        System.out.println("---- NO TENEMOS STOCK ----");
-                        System.out.println();
-                        this.menuprincipal();
-                    } else {
-                        System.out.println("|----CANCELAMOS SU COMPRA----|");
-                        System.out.println();
-                        this.menuprincipal();
-                    }
-                } else if (opcion == 0) {
-                    System.out.println("----RETROCEDIENDO----");
-                    this.menuprincipal();
-                } else {
-                    System.out.println("""
-                                  |---OPCION NO VALIDA---|
-                            |---REGRESANDO AL MENU PRINCIPAL---|
-                            """);
-                    System.out.println();
-                    this.menuprincipal();
-                }
-                break;
-            case 5:
-                System.out.println("TENEMOS:");
-                System.out.println();
-                System.out.println("""
-                        |----------------------------------------------------------------------------------------|
-                         |1| Cloro en pastillas para piscinas 1 kg | 5 pastillas de 200 gr Pluschlor S/39.90
-                         |0| salir al menu principal
-                        |----------------------------------------------------------------------------------------|
-                        """);
-                opcion = ncs.nextInt();
-                if (opcion == 1) {
-                    System.out.println("Cuantas va a querer");
-                    cant_compra = ncs.nextInt();
-                    if (cant_compra > 0 && cant_compra <= 100) {
-                        igv = (cant_compra * 39.9) * 0.18;
-                        subtotal = (cant_compra * 39.9) - igv;
-                        this.pago_y_vuelto();
-                    } else if (cant_compra > 100) {
-                        System.out.println("---- NO TENEMOS STOCK ----");
-                        System.out.println();
-                        this.menuprincipal();
-                    } else {
-                        System.out.println("|----CANCELAMOS SU COMPRA----|");
-                        System.out.println();
-                        this.menuprincipal();
-                    }
-                } else if (opcion == 0) {
-                    System.out.println("----RETROCEDIENDO----");
-                    this.menuprincipal();
-                } else {
-                    System.out.println("""
-                                  |---OPCION NO VALIDA---|
-                            |---REGRESANDO AL MENU PRINCIPAL---|
-                            """);
-                    System.out.println();
-                    this.menuprincipal();
-                }
-                break;
-            case 0:
-                System.out.println("----RETROCEDIENDO----");
-                this.menuprincipal();
-            default:
-                System.out.println("opcion no valida");
+    double cantidadfaltante,pagofinalFaltante,cambioFinal;
+    double[] precio1Plaza = {657, 681, 1899};
+    double[] precio2Plaza = {714, 647, 727, 833};
+    ArrayList<String> Cama1Plazas = new ArrayList<>();
+    ArrayList<String> Cama2plazas = new ArrayList<>();
+    ArrayList<Double> subtotal_camas = new ArrayList<>();
+    ArrayList<Integer> carrito_plaza1 = new ArrayList<>();
+    ArrayList<Integer> carrito_plaza2 = new ArrayList<>();
+    public PROMART_JULIACA_FINAL() {
+
+        //-----------------------------------
+        Cama1Plazas.add("Cama Medallón Ergo 1 plaza Paraiso S/ 657");
+        Cama1Plazas.add("Cama Su Majestad 1 plaza Paraiso S/681");
+        Cama1Plazas.add("Cama Americana Ozono 1 plaza Technodream S/ 1899");
+
+        Cama2plazas.add("Dormitorio Consul 2 plazas con sofá cama Paraiso S/ 714");
+        Cama2plazas.add("Cama Consul Black 2 plazas Paraiso S/647");
+        Cama2plazas.add("Dormitorio Consul Black 2 plazas Paraiso S/727");
+        Cama2plazas.add("Cama Paraiso Lifestyles Pocket 2 Plazas S/833");
+
+        for (int i = 0; i < Cama1Plazas.size(); i++) {
+            carrito_plaza1.add(0);
+        }
+        for (int i = 0; i < Cama2plazas.size(); i++) {
+            carrito_plaza2.add(0);
+            subtotal_camas.add(0.0);
         }
     }
+
+    public void OPCIONDORMITORIOS() {
+        System.out.println("---------Bienvenido a DORMITORIOS-----------");
+        System.out.println("Marque alguna de las siguientes opciones");
+        System.out.println(" 1.- Comprar 1 plazas");
+        System.out.println(" 2.- Comprar 2 plazas");
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        switch (opcion) {
+            case 1:
+                this.Comprar1PlazaCama();
+                break;
+            case 2:
+                this.Comprar2plazacama();
+                break;
+            default:
+                System.out.println("Opcion no válida");
+                this.OPCIONDORMITORIOS();
+                break;
+        }
+    }
+
+    public void Comprar1PlazaCama() {
+        System.out.println("CAMAS 1 PLAZA");
+        System.out.println("Seleccione su producto a comprar");
+        for (int i = 0; i < Cama1Plazas.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Cama1Plazas.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Cama1Plazas.size()) {
+            System.out.println("¿Cuántos objetos comprará? Ingresa la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_plaza1.set(opcion - 1, carrito_plaza1.get(opcion - 1) + cantidad);
+            System.out.println("Ud ha pedido " + carrito_plaza1.get(opcion - 1) + " camas de " + Cama1Plazas.get(opcion - 1));
+            System.out.println("""
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.Comprar1PlazaCama();
+            } else if (opcion == 2) {
+                this.PagosM();
+            } else if (opcion == 3) {
+                this.OPCIONDORMITORIOS();
+            } else {
+                System.out.println("OPCION ERRONEA");
+            }
+        } else {
+            System.out.println("OPCION ERRONEA");
+            this.OPCIONDORMITORIOS();
+        }
+    }
+
+    public void Comprar2plazacama() {
+        System.out.println("CAMAS 2 PLAZA");
+        System.out.println("Seleccione su menú a comprar");
+        for (int i = 0; i < Cama2plazas.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Cama2plazas.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Cama2plazas.size()) {
+            System.out.println("¿Cuántos comprará? Ingrese la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_plaza2.set(opcion - 1, carrito_plaza2.get(opcion - 1) + cantidad);
+            subtotal_camas.set(opcion - 1, carrito_plaza2.get(opcion - 1) * precio2Plaza[opcion - 1]);
+            System.out.println("Ud ha pedido " + carrito_plaza2.get(opcion - 1) + " camas de " + Cama2plazas.get(opcion - 1));
+            System.out.println("""
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.Comprar2plazacama();
+            } else if (opcion == 2) {
+                this.Fpago();
+
+            } else if (opcion == 3) {
+                this.OPCIONDORMITORIOS();
+            } else {
+                System.out.println("OPCION NO VALIDA");
+            }
+        } else {
+            System.out.println("Opción no válida");
+            this.OPCIONDORMITORIOS();
+        }
+    }
+
+
+    public double PagosM() {
+        double cantidadTotalMenus = 0;
+        System.out.println("---------BOLETA DE VENTA DETALLADO---------");
+        System.out.println("CANTIDAD\tDESCRIPCIÓN\t\tTOTAL");
+
+        for (int i = 0; i < Cama1Plazas.size(); i++) {
+            int cantidad = carrito_plaza1.get(i);
+            if (cantidad > 0) {
+                double totalMenu = cantidad * precio1Plaza[i];
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Cama1Plazas.get(i), totalMenu);
+                cantidadTotalMenus += totalMenu;
+            }
+        }
+
+        for (int i = 0; i < Cama2plazas.size(); i++) {
+            int cantidad = carrito_plaza2.get(i);
+            if (cantidad > 0) {
+                double totalExtra = subtotal_camas.get(i);
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Cama2plazas.get(i), totalExtra);
+                cantidadTotalMenus += totalExtra;
+            }
+        }
+
+        igv = cantidadTotalMenus * 0.18;
+        subtotal = cantidadTotalMenus - igv;
+        totalpagar = subtotal + igv;
+
+        System.out.printf("\nSUBTOTAL: %.2f\n", subtotal);
+        System.out.printf("IGV: %.2f\n", igv);
+        System.out.printf("TOTAL A PAGAR: %.2f\n", totalpagar);
+        this.FpagoM();
+        generarboletaM();
+        return totalpagar;
+    }
+
+    public double FpagoM(){
+        Scanner invoker = new Scanner(System.in);
+
+        System.out.println("INGRESA EL PAGO");
+        int pago=invoker.nextInt();
+        if(pago==totalpagar){
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S             ");
+            System.out.println("       POR COMPRAR EN PROMART!         ");
+            System.out.println("*****************************************");
+            this.generarboletaM();
+            System.exit(0);
+
+        }
+        else if(pago<totalpagar){
+            cantidadfaltante=totalpagar-pago;
+            System.out.println("FALTA "+cantidadfaltante);
+            System.out.println();
+            System.out.println("AGREGA LOS "+cantidadfaltante+" o DEVUELVE LOS PRODUCTOS");
+            pagofinalFaltante=invoker.nextInt();
+            if(pagofinalFaltante==cantidadfaltante){
+                System.out.println("*****************************************");
+                System.out.println("           G R A C I A S             ");
+                System.out.println("       POR COMPRAR EN PROMART!         ");
+                System.out.println("*****************************************");
+                System.out.println();
+                this.generarboletaM();
+            } else if (pagofinalFaltante<=0) {
+                System.out.println("PAGO INVALIDO, CERRANDO PROGRAMA");
+
+
+            } else if (pagofinalFaltante > cantidadfaltante) {
+                cambioFinal = pagofinalFaltante - cantidadfaltante;
+                System.out.println("su cambios es: " + cambioFinal + " GRACIAS POR COMPRAR EN PROMART");
+            } else if (pagofinalFaltante < cantidadfaltante) {
+                System.out.println("REGRESE LOS PRODUCTOS, LAS COSAS NO SON GRATIS");
+            }
+        }
+        else if(pago>totalpagar) {
+            vuelto=pago-totalpagar;
+            System.out.println("SU CAMBIO ES:"+vuelto);
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S             ");
+            System.out.println("       POR COMPRAR EN PROMART!         ");
+            System.out.println("*****************************************");
+            this.generarboletaM();
+
+        }
+        System.exit(0);
+        return total;
+    }
+
+
+
+
+
+    public void generarboletaM() {
+        try (FileWriter fileWriter = new FileWriter("PROMARTBOLETA.txt")) {
+            fileWriter.write("----BOLETA DE VENTA---------\n");
+            fileWriter.write("CANTIDAD\tDESCRIPCIÓN\t\tTOTAL\n");
+
+            for (int i = 0; i < Cama1Plazas.size(); i++) {
+                int cantidad = carrito_plaza1.get(i);
+                if (cantidad > 0) {
+                    double totalMenu = cantidad * precio1Plaza[i];
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Cama1Plazas.get(i), totalMenu));
+                }
+            }
+
+            for (int i = 0; i < Cama2plazas.size(); i++) {
+                int cantidad = carrito_plaza2.get(i);
+                if (cantidad > 0) {
+                    double totalExtra = subtotal_camas.get(i);
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Cama2plazas.get(i), totalExtra));
+                }
+            }
+
+            fileWriter.write(String.format("\nSUBTOTAL: %.2f\n", subtotal));
+            fileWriter.write(String.format("IGV: %.2f\n", igv));
+            fileWriter.write(String.format("TOTAL A PAGAR: %.2f\n", totalpagar));
+
+            System.out.println("La boleta ha sido guardada en 'PROMARTBOLETA.txt'.");
+
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al escribir la boleta: " + e.getMessage());
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void automotriz() {
         System.out.println("TENEMOS LO SIGUIENTE:");
@@ -4770,48 +4625,442 @@ public class PROMART_JULIACA {
                 System.out.println("opcion no valida");
         }
     }
-    public void cantidad_De_productos(){
-        int contador=1;
-        System.out.println("|--------------------------------------------------------------------------------------------|");
-        System.out.println("Cuantas va a querer--------------------------------------------------------------------------|");
-        System.out.println("|--------------------------------------------------------------------------------------------|");
-        cant_compra = ncs.nextInt();
-        do{
-            if(cant_compra<0&&cant_compra!=0) {
+    public void PROMARTWA() {
+        Limpieza1.add("Limpiador Cif Anti Hongos Doypack 450ml S/8");
+        Limpieza2.add("Paño de microfibra 40x40cm 6 unidades Orange S/11");
+        Limpieza3.add("Limpiavidrios Sapolio 5lt S/30");
+        Limpieza4.add("Limpiador piso madera y laminado 700ml Binner S/31");
+        Limpieza5.add("Cloro en pastillas para piscinas 1 kg | 5 pastillas de 200 gr Pluschlor S/39.90");
 
-                System.out.println("cantidad no valida");
-                System.out.println("intento num: " + contador);
-                System.out.println("Ingrese cuantas va querer por favor");
-                cant_compra = ncs.nextInt();
-                contador++;
+        for (int i = 0; i < Limpieza1.size(); i++) {
+            carrito_limpieza1.add(0);
+        }
+        for (int i = 0; i < Limpieza2.size(); i++) {
+            carrito_limpieza2.add(0);
+        }
+        for (int i = 0; i < Limpieza3.size(); i++) {
+            carrito_limpieza3.add(0);
+        }
+        for (int i = 0; i < Limpieza4.size(); i++) {
+            carrito_limpieza4.add(0);
+        }
+        for (int i = 0; i < Limpieza5.size(); i++) {
+            carrito_limpieza5.add(0);
+            subtotal_limpieza.add(0.0);
+        }
+    }
+    public void limpieza() {
+        System.out.println("-------------------------------------");
+        System.out.println("TENEMOS LO SIGUIENTE:");
+        System.out.println(" |1|.- Limpieza de baños");
+        System.out.println(" |2|.- Limpieza de cocinas");
+        System.out.println(" |3|.- Limpieza de sala y comedor");
+        System.out.println(" |4|.- Limpieza de pisos");
+        System.out.println(" |5|.- Limpieza de piscinas");
+        System.out.println("--------------------------------------");
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        switch (opcion) {
+            case 1:
+                this.ComprarLimpieza1();
+                break;
+            case 2:
+                this.ComprarLimpieza2();
+                break;
+            case 3:
+                this.ComprarLimpieza3();
+                break;
+            case 4:
+                this.ComprarLimpieza4();
+                break;
+            case 5:
+                this.ComprarLimpieza5();
+                break;
+            default:
+                System.out.println("Opcion no válida");
+                this.limpieza();
+                break;
+        }
+    }
+    public void ComprarLimpieza1() {
+        for (int i = 0; i < Limpieza1.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Limpieza1.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Limpieza1.size()) {
+            System.out.println("¿Cuántos objetos comprará? Ingresa la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_limpieza1.set(opcion - 1, carrito_limpieza1.get(opcion - 1) + cantidad);
+            System.out.println("Ud ha pedido " + carrito_limpieza1.get(opcion - 1) + " productos de " + Limpieza1.get(opcion - 1));
+            System.out.println("""
+                    ---------------------------------------
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL
+                    ---------------------------------------""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.limpieza();
+            } else if (opcion == 2) {
+                this.pagometodo();
+            } else if (opcion == 3) {
+                this.secciondecategorias();
+            } else {
+                System.out.println("OPCION ERRONEA");
+            }
+        } else {
+            System.out.println("OPCION ERRONEA");
+            this.limpieza();
+        }
+    }
+    public void ComprarLimpieza2() {
+        for (int i = 0; i < Limpieza2.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Limpieza2.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Limpieza2.size()) {
+            System.out.println("¿Cuántos comprará? Ingrese la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_limpieza2.set(opcion - 1, carrito_limpieza2.get(opcion - 1) + cantidad);
+            System.out.println("Ud ha pedido " + carrito_limpieza2.get(opcion - 1) + " productos de " + Limpieza2.get(opcion - 1));
+            System.out.println("""
+                    -------------------------------------
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL
+                    -------------------------------------""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.limpieza();
+            } else if (opcion == 2) {
+                this.pagometodo();
+            } else if (opcion == 3) {
+                this.secciondecategorias();
+            } else {
+                System.out.println("OPCION NO VALIDA");
+            }
+        } else {
+            System.out.println("Opción no válida");
+            this.limpieza();
+        }
+    }
+    public void ComprarLimpieza3() {
+        for (int i = 0; i < Limpieza3.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Limpieza3.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Limpieza3.size()) {
+            System.out.println("¿Cuántos comprará? Ingrese la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_limpieza3.set(opcion - 1, carrito_limpieza3.get(opcion - 1) + cantidad);
+            System.out.println("Ud ha pedido " + carrito_limpieza3.get(opcion - 1) + " productos de " + Limpieza3.get(opcion - 1));
+            System.out.println("""
+                    -------------------------------------
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL
+                    -------------------------------------""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.limpieza();
+            } else if (opcion == 2) {
+                this.pagometodo();
+            } else if (opcion == 3) {
+                this.secciondecategorias();
+            } else {
+                System.out.println("OPCION NO VALIDA");
+            }
+        } else {
+            System.out.println("Opción no válida");
+            this.limpieza();
+        }
+    }
+    public void ComprarLimpieza4() {
+        for (int i = 0; i < Limpieza4.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Limpieza4.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Limpieza4.size()) {
+            System.out.println("¿Cuántos comprará? Ingrese la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_limpieza4.set(opcion - 1, carrito_limpieza4.get(opcion - 1) + cantidad);
+            System.out.println("Ud ha pedido " + carrito_limpieza4.get(opcion - 1) + " productos de " + Limpieza4.get(opcion - 1));
+            System.out.println("""
+                    --------------------------------------
+                    ELIJE UNA DE LAS OPCIONES:
+                    1 AGREGAR MAS PRODUCTOS
+                    2 PAGAR LOS PRODUCTOS AGREGADOS
+                    3 MENU PRINCIPAL
+                    --------------------------------------""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.limpieza();
+            } else if (opcion == 2) {
+                this.pagometodo();
+            } else if (opcion == 3) {
+                this.secciondecategorias();
+            } else {
+                System.out.println("OPCION NO VALIDA");
+            }
+        } else {
+            System.out.println("Opción no válida");
+            this.limpieza();
+        }
+    }
+    public void ComprarLimpieza5() {
+        for (int i = 0; i < Limpieza5.size(); i++) {
+            System.out.println("Opción " + (i + 1) + " : " + Limpieza5.get(i));
+        }
+        opcion = ncs.nextInt();
+        ncs.nextLine();
+        if (opcion >= 1 && opcion <= Limpieza5.size()) {
+            System.out.println("¿Cuántos comprará? Ingrese la cantidad");
+            cantidad = ncs.nextInt();
+            ncs.nextLine();
+            carrito_limpieza5.set(opcion - 1, carrito_limpieza5.get(opcion - 1) + cantidad);
+
+            subtotal_limpieza.set(opcion - 1, carrito_limpieza5.get(opcion - 1) * precio5[opcion - 1]);
+            System.out.println("Ud ha pedido " + carrito_limpieza2.get(opcion - 1) + " productos de" + Limpieza5.get(opcion - 1));
+            System.out.println("""
+                    -------------------------------------
+                    ELIJE UNA DE LAS OPCIONES:
+                    |1| AGREGAR MAS PRODUCTOS
+                    |2| PAGAR LOS PRODUCTOS AGREGADOS
+                    |3| MENU PRINCIPAL
+                    -------------------------------------""");
+            opcion = ncs.nextInt();
+            ncs.nextLine();
+            if (opcion == 1) {
+                System.out.println("REGRESANDO PARA AGREGAR MAS PRODUCTOS");
+                this.limpieza();
+            } else if (opcion == 2) {
+                this.pagometodo();
+            }
+            else if (opcion == 3) {
+                this.secciondecategorias();
+            } else {
+                System.out.println("OPCION NO VALIDA");
+            }
+        } else {
+            System.out.println("Opción no válida");
+            this.limpieza();
+        }
+    }
+    public double pagometodo() {
+        this.Pagos();
+        System.out.println("--------------------------------");
+        System.out.println("ELIGE EL METODO DE PAGO:");
+        System.out.println("|1| PAGO AL CONTADO");
+        System.out.println("|2| PAGO CON TARJETA");
+        System.out.println("|3|  MENU PRINCIPAL");
+        System.out.println("--------------------------------");
+        int metodoPago = ncs.nextInt();
+        ncs.nextLine();
+
+        if (metodoPago == 1) {
+            System.out.println("INGRESA EL PAGO EN EFECTIVO");
+            int pago = ncs.nextInt();
+            if (pago == totalpagar) {
+                System.out.println("***************");
+                System.out.println("           G R A C I A S             ");
+                System.out.println("       POR COMPRAR EN PROMART!         ");
+                System.out.println("***************");
+                this.generarboleta();
+                System.exit(0);
+
+            } else if (pago < totalpagar) {
+                double cantidadfaltante = totalpagar - pago;
+                System.out.println("FALTA " + cantidadfaltante);
+                System.out.println("AGREGA LOS " + cantidadfaltante + " o DEVUELVE LOS PRODUCTOS");
+                int pagofinalFaltante = ncs.nextInt();
+                if (pagofinalFaltante == cantidadfaltante) {
+                    System.out.println("***************");
+                    System.out.println("           G R A C I A S             ");
+                    System.out.println("       POR COMPRAR EN PROMART!         ");
+                    System.out.println("***************");
+                    this.generarboleta();
+                } else if (pagofinalFaltante <= 0) {
+                    System.out.println("PAGO INVALIDO, CERRANDO PROGRAMA");
+                } else if (pagofinalFaltante > cantidadfaltante) {
+                    double cambioFinal = pagofinalFaltante - cantidadfaltante;
+                    System.out.println("Su cambio es: " + cambioFinal + " GRACIAS POR COMPRAR EN PROMART");
+                } else if (pagofinalFaltante < cantidadfaltante) {
+                    System.out.println("REGRESE LOS PRODUCTOS, LAS COSAS NO SON GRATIS");
+                }
+            } else if (pago > totalpagar) {
+                double vuelto = pago - totalpagar;
+                System.out.println("SU CAMBIO ES:" + vuelto);
+                System.out.println("***************");
+                System.out.println("           G R A C I A S             ");
+                System.out.println("       POR COMPRAR EN PROMART!         ");
+                System.out.println("***************");
+                this.generarboleta();
 
             }
-            else if(cant_compra>0){
-                this.pago_y_vuelto();
-            }
-            else if(cant_compra==0){
-                System.out.println("REGRESANDO........................................................");
-                this.menuprincipal();
-            }
-            else{
+            else {
                 System.out.println("opcion no valida");
             }
         }
-        while(cant_compra<0&&contador<3);
-        System.out.println("REGRESANDO..........................................................");
-        this.menuprincipal();
+        else if (metodoPago == 2) {
+            System.out.println("---------------------------------------------------");
+            System.out.println("INGRESA LOS DETALLES DE TU TARJETA:");
+            System.out.println("NUMERO DE TARJETA (16 DIGITOS POR FAVOR):");
+            String numeroTarjeta = ncs.nextLine();
+            System.out.println("FECHA DE EXPIRACION (MM/AA):");
+            String fechaExpiracion = ncs.nextLine();
+            System.out.println("CODIGO DE SEGURIDAD (CVV):");
+            String codigoSeguridad = ncs.nextLine();
+            System.out.println("----------------------------------------------------");
 
+
+            if (numeroTarjeta.length() == 16 && fechaExpiracion.matches("\\d{2}/\\d{2}") && codigoSeguridad.length() == 3) {
+                System.out.println("Los datos de la tarjeta son válidos.");
+                System.out.println("Pago procesado con éxito.");
+                System.out.println("***************");
+                System.out.println("           G R A C I A S             ");
+                System.out.println("       POR COMPRAR EN PROMART!         ");
+                System.out.println("***************");
+                this.generarboleta();
+                System.exit(0);
+            } else {
+                System.out.println("Los datos de la tarjeta no son válidos. Intenta de nuevo.");
+                this.pagometodo();
+            }
+        } else if (metodoPago == 3) {
+            this.menuprincipal();
+        }
+        else {
+            System.out.println("Método de pago no válido. Por favor, elige una opción válida.");
+            this.pagometodo();
+        }
+
+        return totalpagar;
     }
-    public void boleta_de_venta(){
-        System.out.println("|-------------------------------------BOLETA DE VENTA----------------------------------------|");
-        System.out.println("|--------------------------------------------------------------------------------------------|");
-        System.out.println("CANTIDAD ........................................................................."+cant_compra);
-        System.out.println("SUBTOTAL ........................................................................."+subtotal);
-        System.out.println("IGV .............................................................................."+igv);
-        System.out.println("TOTAL A PAGAR ...................................................................."+total_a_pagar);
-        System.out.println("VUELTO ..........................................................................."+total);
-        System.out.println("|--------------------------------------------------------------------------------------------|");
+    public double Pagos() {
+        double cantidadTotalMenus = 0;
+
+        for (int i = 0; i < Limpieza1.size(); i++) {
+            int cantidad = carrito_limpieza1.get(i);
+            if (cantidad > 0) {
+                double totalMenu = cantidad * precio1[i];
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza1.get(i), totalMenu);
+                cantidadTotalMenus += totalMenu;
+            }
+        }
+        for (int i = 0; i < Limpieza2.size(); i++) {
+            int cantidad = carrito_limpieza2.get(i);
+            if (cantidad > 0) {
+                double totalMenu = cantidad * precio2[i];
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza2.get(i), totalMenu);
+                cantidadTotalMenus += totalMenu;
+            }
+        }
+        for (int i = 0; i < Limpieza3.size(); i++) {
+            int cantidad = carrito_limpieza3.get(i);
+            if (cantidad > 0) {
+                double totalMenu = cantidad * precio3[i];
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza3.get(i), totalMenu);
+                cantidadTotalMenus += totalMenu;
+            }
+        }
+        for (int i = 0; i < Limpieza4.size(); i++) {
+            int cantidad = carrito_limpieza4.get(i);
+            if (cantidad > 0) {
+                double totalMenu = cantidad * precio4[i];
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza4.get(i), totalMenu);
+                cantidadTotalMenus += totalMenu;
+            }
+        }
+        for (int i = 0; i < Limpieza5.size(); i++) {
+            int cantidad = carrito_limpieza5.get(i);
+            if (cantidad > 0) {
+                double totalExtra = subtotal_limpieza.get(i);
+                System.out.printf("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza5.get(i), totalExtra);
+                cantidadTotalMenus += totalExtra;
+            }
+        }
+
+        igv = cantidadTotalMenus * 0.18;
+        subtotal = cantidadTotalMenus - igv;
+        totalpagar = subtotal + igv;
+
+        return cantidadTotalMenus;
     }
+    public void generarboleta() {
+        System.out.printf("\nSUBTOTAL: %.2f\n", subtotal);
+        System.out.printf("IGV: %.2f\n", igv);
+        System.out.printf("TOTAL A PAGADO: %.2f\n", totalpagar);
+        try (FileWriter fileWriter = new FileWriter("PROMARTBOLETA.txt")) {
+            fileWriter.write("----BOLETA DE VENTA---------\n");
+            fileWriter.write("CANTIDAD\tDESCRIPCIÓN\t\tTOTAL\n");
+
+            for (int i = 0; i < Limpieza1.size(); i++) {
+                int cantidad = carrito_limpieza1.get(i);
+                if (cantidad > 0) {
+                    double totalMenu = cantidad * precio1[i];
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza1.get(i), totalMenu));
+                }
+            }
+            for (int i = 0; i < Limpieza2.size(); i++) {
+                int cantidad = carrito_limpieza2.get(i);
+                if (cantidad > 0) {
+                    double totalMenu = cantidad * precio2[i];
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza2.get(i), totalMenu));
+                }
+            }
+            for (int i = 0; i < Limpieza3.size(); i++) {
+                int cantidad = carrito_limpieza3.get(i);
+                if (cantidad > 0) {
+                    double totalMenu = cantidad * precio3[i];
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza3.get(i), totalMenu));
+                }
+            }
+            for (int i = 0; i < Limpieza4.size(); i++) {
+                int cantidad = carrito_limpieza4.get(i);
+                if (cantidad > 0) {
+                    double totalMenu = cantidad * precio4[i];
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza4.get(i), totalMenu));
+                }
+            }
+            for (int i = 0; i < Limpieza5.size(); i++) {
+                int cantidad = carrito_limpieza5.get(i);
+                if (cantidad > 0) {
+                    double totalExtra = subtotal_limpieza.get(i);
+                    fileWriter.write(String.format("%d\t\t%s\t\t%.2f\n", cantidad, Limpieza5.get(i), totalExtra));
+                }
+            }
+
+            fileWriter.write(String.format("\nSUBTOTAL: %.2f\n", subtotal));
+            fileWriter.write(String.format("IGV: %.2f\n", igv));
+            fileWriter.write(String.format("TOTAL A PAGAR: %.2f\n", totalpagar));
+
+            System.out.println("LA BOLETA SE HA GUARDADO EN: 'PROMARTBOLETA.txt'.");
+
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al escribir la boleta: " + e.getMessage());
+        }
+    }
+
+
     //FIN DE CODIGO DE DUA
     //VUELTO DE YEYSON
     public void pago_y_vuelto(){
@@ -4825,105 +5074,36 @@ public class PROMART_JULIACA {
                 |--------------------------------------------------------------------------------------------|
                 ELIGA UNA OPCION
                 |--------------------------------------------------------------------------------------------|
-                |1| PAGAR------------------------------------------------------------------------------------|
+                |1| PAGAR -----------------------------------------------------------------------------------|
                 |2| MENU PRINCIPAL---------------------------------------------------------------------------|
                 |--------------------------------------------------------------------------------------------|
                 """);
         opcion= ncs.nextInt();
-        switch (opcion){
-            case 1:
-                System.out.println("|--------------------------------------------------------------------------------------------|");
-                System.out.println("ingrese lo que va a pagar es soles por favor-------------------------------------------------|");
-                cant_de_dinero=ncs.nextDouble();
-                if (cant_de_dinero<total_a_pagar&&cant_de_dinero>=0){
-                    vuelto=total_a_pagar-cant_de_dinero;
-                    System.out.println("|--------------------------------------------------------------------------------------------|");
-                    System.out.println("A UD le falta aumentar "+(vuelto)+" soles");
-                    System.out.println("¿CUANTO VA A AUMENTAR?-----------------------------------------------------------------------|");
-                    aumentar= ncs.nextDouble();
-                    if(aumentar>vuelto&&aumentar!=0){
-                        total=aumentar-(-vuelto);
-                        System.out.println("""
-                                |--------------------------------------------------------------------------------------------|
-                                Espere.......................................................................................|
-                                |--------------------------------------------------------------------------------------------|
-                                """);
-                        System.out.println("|--------------------------------------------------------------------------------------------|");
-                        System.out.println("GRACIAS POR COMPLETAR");
-                        this.boleta_de_venta();
-                        System.out.println("|--------------------------------------------------------------------------------------------|");
-                        System.out.println("*****************************************");
-                        System.out.println("           G R A C I A S                 ");
-                        System.out.println("       POR COMPRAR EN PROMART!           ");
-                        System.out.println("*****************************************");
-                        System.out.println("|--------------------------------------------------------------------------------------------|");
-                        System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
-                    }
-                    else if(aumentar==0){
-                        System.out.println("ud no aumento nada");
-                        System.out.println("¿Va a hacer compras?");
-                    }
-                    else if(aumentar<vuelto){
-                        System.out.println("CANCELAMOS SU COMPRA");
-                        System.out.println("¿Va a hacer compras?");
-                    }
-                    else{
-                    }
-                }
-                else if (cant_de_dinero>total_a_pagar){
-                    System.out.println("""
-                            Espere....................................
-                            """);
-                    vuelto=cant_de_dinero-total_a_pagar;
-                    total=vuelto;
-                    this.boleta_de_venta();
-                    System.out.println("|--------------------------------------------------------------------------------------------|");
-                    System.out.println("*****************************************");
-                    System.out.println("           G R A C I A S                 ");
-                    System.out.println("       POR COMPRAR EN PROMART!           ");
-                    System.out.println("*****************************************");
-                    System.out.println("|--------------------------------------------------------------------------------------------|");
-                    System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
-                }
-                else if (cant_de_dinero==total_a_pagar){
-                    this.boleta_de_venta();
-                    System.out.println("|--------------------------------------------------------------------------------------------|");
-                    System.out.println("*****************************************");
-                    System.out.println("           G R A C I A S                 ");
-                    System.out.println("       POR COMPRAR EN PROMART!           ");
-                    System.out.println("*****************************************");
-                    System.out.println("|--------------------------------------------------------------------------------------------|");
-                    System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
-                }
-                else if (cant_de_dinero<0){
-                    System.out.println("dinero imaginario??");
-                    System.out.println("¿Va a hacer compras?");
-                }
-                else{
-                    System.out.println("opcion no valida");
-                }
+        switch (opcion) {
+            case 0:
                 System.out.println("""
-                        |--------------------------------------------------------------------------------------------|
-                        |1| SI---------------------------------------------------------------------------------------|
-                        |2| NO---------------------------------------------------------------------------------------|
-                        |--------------------------------------------------------------------------------------------|
+                        |1| Ir a mi carrito.
+                        |2| Ver mas productos.
+                        |0| Menu principal
                         """);
                 opcion= ncs.nextInt();
                 switch (opcion){
                     case 1:
-                        this.secciondecategorias();
+                        this.CARRITO();
                         break;
                     case 2:
-                        System.out.println("|--------------------------------------------------------------------------------------------|");
-                        System.out.println("*****************************************");
-                        System.out.println("           G R A C I A S                 ");
-                        System.out.println("       POR COMPRAR EN PROMART!           ");
-                        System.out.println("*****************************************");
-                        System.out.println("|--------------------------------------------------------------------------------------------|");
+                        this.secciondecategorias();
+                        break;
+                    case 0:
+                        this.menuprincipal();
                         break;
                     default:
+                        System.out.println("opcion no valida");
                         break;
                 }
+                break;
+            case 1:
+                this.PAGAR();
                 break;
             case 2:
                 this.menuprincipal();
@@ -4932,237 +5112,160 @@ public class PROMART_JULIACA {
                 break;
         }
     }
+    public void PAGAR(){
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        System.out.println("ingrese lo que va a pagar es soles por favor-------------------------------------------------|");
+        cant_de_dinero=ncs.nextDouble();
+        if (cant_de_dinero<total_a_pagar&&cant_de_dinero>=0){
+            vuelto=total_a_pagar-cant_de_dinero;
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("A UD le falta aumentar "+(vuelto)+" soles");
+            System.out.println("¿CUANTO VA A AUMENTAR?-----------------------------------------------------------------------|");
+            aumentar= ncs.nextDouble();
+            if(aumentar>vuelto&&aumentar!=0){
+                total=aumentar-(-vuelto);
+                System.out.println("""
+                                |--------------------------------------------------------------------------------------------|
+                                Espere.......................................................................................|
+                                |--------------------------------------------------------------------------------------------|
+                                """);
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("GRACIAS POR COMPLETAR");
+                this.boleta_de_venta();
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("*****************************************");
+                System.out.println("           G R A C I A S                 ");
+                System.out.println("       POR COMPRAR EN PROMART!           ");
+                System.out.println("*****************************************");
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
+            }
+            else if(aumentar==0){
+                System.out.println("ud no aumento nada");
+                System.out.println("¿Va a hacer compras?");
+            }
+            else if(aumentar<vuelto){
+                System.out.println("CANCELAMOS SU COMPRA");
+                System.out.println("¿Va a hacer compras?");
+            }
+            else{
+            }
+        }
+        else if (cant_de_dinero>total_a_pagar){
+            System.out.println("""
+                            Espere....................................
+                            """);
+            vuelto=cant_de_dinero-total_a_pagar;
+            total=vuelto;
+            this.boleta_de_venta();
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S                 ");
+            System.out.println("       POR COMPRAR EN PROMART!           ");
+            System.out.println("*****************************************");
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
+        }
+        else if (cant_de_dinero==total_a_pagar){
+            this.boleta_de_venta();
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("*****************************************");
+            System.out.println("           G R A C I A S                 ");
+            System.out.println("       POR COMPRAR EN PROMART!           ");
+            System.out.println("*****************************************");
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("¿Va a hacer mas compras?---------------------------------------------------------------------|");
+        }
+        else if (cant_de_dinero<0){
+            System.out.println("dinero imaginario??");
+            System.out.println("¿Va a hacer compras?");
+        }
+        else{
+            System.out.println("opcion no valida");
+        }
+        System.out.println("""
+                        |--------------------------------------------------------------------------------------------|
+                        |1| SI---------------------------------------------------------------------------------------|
+                        |2| NO---------------------------------------------------------------------------------------|
+                        |--------------------------------------------------------------------------------------------|
+                        """);
+        opcion= ncs.nextInt();
+        switch (opcion){
+            case 1:
+                this.secciondecategorias();
+                break;
+            case 2:
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("*****************************************");
+                System.out.println("           G R A C I A S                 ");
+                System.out.println("       POR COMPRAR EN PROMART!           ");
+                System.out.println("*****************************************");
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void CARRITO() {
 
+        System.out.println("""
+                System.out.println(""
+                |1| Pagar.
+                |2| Ver mas productos.
+                |0| Menu principal
+                """);
+        opcion= ncs.nextInt();
+        switch (opcion){
+            case 1:
+                this.PAGAR();
+                break;
+            case 2:
+                this.secciondecategorias();
+                break;
+            case 0:
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public void cantidad_De_productos(){
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        System.out.println("Cuantas va a querer--------------------------------------------------------------------------|");
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        cant_compra = ncs.nextInt();
+        //indice para el carrito
+        carritoM.add(cant_compra);
+    }
+
+    public void boleta_de_venta(){
+        System.out.println("|-------------------------------------BOLETA DE VENTA----------------------------------------|");
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        System.out.println("|---------------------------------------------------------------------------------");
+        System.out.println("|---------------------------------------------------------------------------------"+carritoM.get((carritoM.size()-1)));
+        System.out.println("CANTIDAD ........................................................................."+cant_compra);
+        System.out.println("SUBTOTAL ........................................................................."+subtotal);
+        System.out.println("IGV .............................................................................."+igv);
+        System.out.println("TOTAL A PAGAR ...................................................................."+total_a_pagar);
+        System.out.println("VUELTO ..........................................................................."+total);
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+    }
+
+    public void ExportarBoleta(){
+        try(FileWriter Editor=new FileWriter("PROMART.txt")){
+            Editor.write("-----Boleta de Venta-----");
+            Editor.write("CANTIDAD\tDESCRIPCIÓN\t\tTOTAL\n");
+            this.boleta_de_venta();
+        }
+        catch (IOException e) {
+            System.out.println("Ocurrió un error al escribir la boleta: " + e.getMessage());
+        }
+    }
     //CODIGO DE ALEX
 
     //--
-    public void OPCIONDORMITORIOS() {
-
-        do {
-
-
-            System.out.println("TENEMOS LOS SIGUIENTES COLCHONES");
-            System.out.println();
-            System.out.println("""
-                    (1). COLCHONES 1 PLAZA
-                    (2). COLCHONES 1.5 PLAZA
-                    (3). COLCHONES 2 PLAZAS
-                    (4). COLCHONES QUEEN
-                    (5). COLCHONES KING
-                    0 RETROCEDER""");
-            System.out.println("ELIJE UNA DE LAS SIGUIENTES OPCIONES: ");
-            opcion_Rr = ncs.nextInt();
-            switch (opcion_Rr) {
-                case 1://1 PLAZA
-                    do {
-                        System.out.println("""
-                                (1). Colchón Eden Plus 1 plaza Paraiso S/269
-                                (2). Colchón Zebra 16 1.0x5 - 1 plaza Paraiso S/ 119
-                                (3). Colchón Zebra 18 1.0x8 - 1 plaza Paraiso S/ 229
-                                (0). RETROCEDER
-                                """);
-                        System.out.print("ELIJA UNA OPCION: ");
-                        opcion1_R = ncs.nextInt();
-                        switch (opcion1_R) {
-                            case 1:
-                                total_R =269;
-                                System.out.println("Usted selecciono Colchón Eden Plus 1 plaza Paraiso S/269");
-                                this.IgvPagos();
-                                break;
-                            case 2:
-                                total_R =119;
-                                System.out.println("Usted selecciono Colchón Zebra 16 1.0x5 - 1 plaza Paraiso S/ 119");
-                                this.IgvPagos();
-                                break;
-
-                            case 3:
-                                total_R =229;
-                                System.out.println("Usted selecciono Colchón Zebra 18 1.0x8 - 1 plaza Paraiso S/ 229");
-                                this.IgvPagos();
-                                break;
-                            case 0:
-                                System.out.println();
-                                System.out.println("Retrocediendo al menú anterior.......");
-                                System.out.println();
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total_R);
-                        System.out.println();
-                    }
-                    while (opcion1_R != 0);
-                    System.out.println();
-                    break;
-
-
-                case 2://1.5 PLAZA
-                    do {
-                        System.out.println("""
-                                (1). colchón Consul black 1.5 plazas Paraiso S/249
-                                (2). Colchón Zebra 18 1.5x8 - 1.5 plazas Paraiso S/259
-                                (3). Colchón Kayseri 1.5 plazas El cisne S/1250
-                                (0). Salir
-                                """);
-                        System.out.println("elije una opcion");
-                        opcion1_R = ncs.nextInt();
-                        switch (opcion1_R) {
-                            case 1:
-                                total_R =249;
-                                System.out.println("Usted selecciono colchón Consul black 1.5 plazas Paraiso S/249");
-                                this.IgvPagos();
-                                break;
-                            case 2:
-                                total_R =259;
-                                System.out.println("Usted selecciono Colchón Zebra 18 1.5x8 - 1.5 plazas Paraiso S/259");
-                                this.IgvPagos();
-                                break;
-                            case 3:
-                                total_R = 1250;
-                                System.out.println("Usted selecciono Colchón Kayseri 1.5 plazas El cisne S/1250");
-                                this.IgvPagos();
-                                break;
-                            case 0:
-                                System.out.println("Retrocediendo al menú anterior.......");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total_R);
-                        System.out.println();
-                    }
-                    while (opcion1_R != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total_R);
-                    System.out.println();
-                    break;
-
-                case 3://	COLCHONES 2 PLAZAS
-                    do {
-                        System.out.println("""
-                                (1). Colchón Super Star 2 plazas Paraiso S/529
-                                (2). Colchón Consul Black 2 plazas Paraiso S/309
-                                (3). Colchón Gravity 2 plazas Technodream S/1399
-                                (0). retroceder
-                                """);
-                        System.out.println("elija una de las opciones");
-                        opcion1_R = ncs.nextInt();
-                        switch (opcion1_R) {
-                            case 1:
-                                total_R =529;
-                                System.out.println("Usted selecciono Colchón Super Star 2 plazas Paraiso S/529");
-                                this.IgvPagos();
-                                break;
-                            case 2:
-                                total_R =309;
-                                System.out.println("Usted selecciono Colchón Consul Black 2 plazas Paraiso S/309");
-                                this.IgvPagos();
-                                break;
-                            case 3:
-                                total_R =1399;
-                                System.out.println("Usted selecciono Colchón Gravity 2 plazas Technodream S/1399");
-                                this.IgvPagos();
-                                break;
-                            case 0:
-                                System.out.println("Retrocediendo al menú anterior.......");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total_R);
-                        System.out.println();
-                    }
-                    while (opcion1_R != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total_R);
-                    System.out.println();
-                    break;
-                case 4:
-                    do {
-                        System.out.println("""
-                                (1).	Colchón Paraiso Lifestyles Pocket Queen S/619
-                                (2).	Colchón Dynamic Queen El cisne S/ 1509
-                                (3).    Colchón Pure Fresh Queen Drimer S/2679
-                                (0).    retroceder""");
-                        System.out.println("Selecciona una opcion");
-                        opcion1_R = ncs.nextInt();
-                        switch (opcion1_R) {
-                            case 1:
-                                total_R =619;
-                                System.out.println("Usted selecciono Colchón Paraiso Lifestyles Pocket Queen S/619");
-                                this.IgvPagos();
-                                break;
-                            case 2:
-                                total_R =1509;
-                                System.out.println("gracias por comprar Colchón Dynamic Queen El cisne S/1509");
-                                this.IgvPagos();
-                                break;
-                            case 3:
-                                total_R =2679;
-                                System.out.println("gracias por comprar Colchón Pure Fresh Queen Drimer S/2679");
-                                this.IgvPagos();
-                                break;
-                            case 0:
-                                System.out.println("Retrocediendo al menú anterior.......");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total_R);
-                        System.out.println();
-                    } while (opcion1_R != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total_R);
-                    System.out.println();
-                    break;
-
-
-                case 5:
-                    do {
-                        System.out.println("""
-                                (1). Colchón Super Star King Paraiso S/ 769
-                                (2). Colchón Ozono King Technodream S/2099
-                                (3). Colchón Element King El cisne S/2320
-                                (0). Salir""");
-                        System.out.println("selecciona una de las opciones");
-                        opcion1_R = ncs.nextInt();
-                        switch (opcion1_R) {
-                            case 1:
-                                total_R =769;
-                                System.out.println("Usted selecciono Colchón Super Star King Paraiso S/769");
-                                this.IgvPagos();
-                                break;
-                            case 2:
-                                total_R =2099;
-                                System.out.println("Usted selecciono Colchón Ozono King Technodream S/2099");
-                                this.IgvPagos();
-                                break;
-                            case 3:
-                                total_R =2320;
-                                System.out.println("Usted selecciono Colchón Element King El cisne S/2320");
-                                this.IgvPagos();
-                                break;
-                            case 0:
-                                System.out.println("Retrocediendo al menú anterior.......");
-                                break;
-                            default:
-                                System.out.println("selecciona solo las opciones disponibles");
-                        }
-                        System.out.println("TOTAL ACTUAL DE COMPRA " + total_R);
-                        System.out.println();
-
-
-                    }
-                    while (opcion1_R != 0);
-                    System.out.println("TIENES QUE PAGAR UN TOTAL DE " + total_R);
-                    System.out.println();
-                    break;
-
-            }
-
-        }
-        while (opcion_Rr != 0);
-        System.out.println("Retrocediendo al menú anterior.......");
-    }
 
     public void HERRAMIENTAS() {
         do {
@@ -6029,8 +6132,11 @@ public class PROMART_JULIACA {
         opcion = ncs.nextInt();
     }
     //FIN DE CODIGO //
-    public static void main(String[]args){
-        PROMART_JULIACA XD= new PROMART_JULIACA();
+
+
+    public static void main(String[]args) {
+        PROMART_JULIACA_FINAL XD = new PROMART_JULIACA_FINAL();
+        XD.PROMARTWA();
         XD.menuprincipal();
     }
 }
